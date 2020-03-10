@@ -1,0 +1,20 @@
+{
+  "name": "absensi",
+  "version": "1.0.0",
+  "description": "A webapp to create and manage absences/presences dynamically",
+  "main": "index.js",
+  "scripts": {
+    "test": "absensi_test"
+  },
+  "author": "Bagus Seno Pamungkas & Abu Abdirrahman",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "knex": "^0.20.11",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
