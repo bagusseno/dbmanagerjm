@@ -1,10 +1,9 @@
-'use strict'
+"use strict";
 
 module.exports = function(app) {
+  // controller classes
+  var dummy_controller = require("../controllers/dummy_controller.js");
 
-    // controller classes
-    var User_area_controller = require('../controllers/user_admin_controller.js')
-
-    app.get('/unit-testing/get-all-users', User_area_controller.get_all)
-
-}
+  // dummy
+  app.get("/unit-testing/login", dummy_controller.show);
+};
