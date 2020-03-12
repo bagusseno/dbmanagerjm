@@ -2,8 +2,9 @@
 
 module.exports = function(app) {
   // controller classes
-  var unit_testing_controller = require("../controllers/other_controllers/unit_testing_controller.js");
+  var user_public_controller = require("../controllers/views/user_public_controller.js");
 
-  // dummy
-  app.get("/unit-testing/login", unit_testing_controller.show);
+  // user public views
+  app.get("/login", user_public_controller.login);
+  app.get("/register", user_public_controller.registration);
 };
