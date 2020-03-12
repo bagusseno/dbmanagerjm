@@ -12,3 +12,14 @@ exports.registration = (req, res) => {
 
     res.render('auth/register')
 }
+
+exports.presence_board = (req, res) => {
+
+    res.render("user_public/presence_board", {
+        title_event : "Pengajian Pernak Pernik",
+        current_user: {
+            username    : "Abu Abdirohman",
+            photo       : "default.jpeg"
+        }
+    });
+}

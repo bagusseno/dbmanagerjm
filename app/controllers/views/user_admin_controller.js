@@ -1,6 +1,17 @@
 'use strict'
 
-var User_model = require('../../models/user_model.js')
+var user_model = require('../../models/user_model.js')
+
+exports.dashboard = (req, res) => {
+
+    res.render('user_admin/views/dashboard', {
+        title_event : "Pengajian Pernak Pernik",
+        current_user: {
+            username    : "Abu Abdirohman",
+            photo       : "default.jpeg"
+        }
+    });
+}
 
 exports.manage_all_event_head = (req, res) => {
 
