@@ -1,6 +1,7 @@
 'use strict'
 
-exports.test = (req, res) => {
+exports.show = (req, res) => {    
     
-    res.render('test')
+    res.render('auth/login', {base_url : config.hostname});
+
 }

@@ -1,10 +1,11 @@
 var path = require('path')
-
 var express = require('express')
 var body_parser = require('body-parser')
 
 app = express();
 port = 3000;
+config = require('./config/config.js').config.development
+console.log(config);
 
 app.get("/", function(req, res) {
   res.send("TEST");
@@ -12,6 +13,7 @@ app.get("/", function(req, res) {
 
 app.use(body_parser.urlencoded({extended: true}))
 app.use(body_parser.json())
+app.use(express.static('statics'))
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'app/views'))
