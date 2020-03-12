@@ -10,10 +10,13 @@ exports.get_by_id = (id) => {
     return knex(table_name).where('id', id)
 }
 
-exports.is_user_available = () => {
+exports.get_by_credentials = (email, password) => {
     
-    query = knex(table_name).where({
-        'username'  : username,
+    return knex(table_name).where({
+        'email'  : email,
         'password'  : password
+    }).then((rows) => {
+
+        return rows
     })
 }
