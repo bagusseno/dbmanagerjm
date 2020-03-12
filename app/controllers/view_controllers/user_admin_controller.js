@@ -1,7 +1,7 @@
 'use strict'
 
-var template_engine = require('../libs/template_engine_lib.js')
-var User_model = require('../models/user_model.js')
+var template_engine = require('../../../libs/template_engine_lib.js')
+var User_model = require('../../models/user_model.js')
 
 exports.manage_all_event_head = (req, res) => {
 

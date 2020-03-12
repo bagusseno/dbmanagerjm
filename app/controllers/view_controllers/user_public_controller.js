@@ -1,7 +1,12 @@
 'use strict'
 
-var template_engine = require('../libs/template_engine_lib.js')
+var template_engine = require('../../../libs/template_engine_lib.js')
+var User_model = require('../../models/user_model.js')
 
-exports.index = (req, res) => {
+exports.homepage = (req, res) => {
+
+}
+
+exports.presence_board = (req, res) => {
     
 }
