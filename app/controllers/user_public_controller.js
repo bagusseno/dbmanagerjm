@@ -22,7 +22,7 @@ exports.login = async (req, res) => {
                     email: req.body.email
                 }
 
-                res.redirect('/dashboard')
+                res.redirect('/admin/dashboard')
 
             } else {
 
@@ -33,21 +33,12 @@ exports.login = async (req, res) => {
     }
 
     if(req.method == 'GET')
-        res.render('auth/login')
-}
-
-exports.logout = (req, res) => {
-
-    req.session.current_user = null
-    res.redirect('/login')
+        res.render('auth/login', {
+            page_title: 'Log in to Absensi'
+        })
 }
 
 exports.register = (req, res) => {
 
     res.render('auth/register')
-}
-
-exports.presence_board = (req, res) => {
-
-    res.render('user_public/presence_board')
 }

@@ -1,6 +1,23 @@
 'use strict'
 
-var User_model = require('../models/user_model.js')
+var user_model = require('../models/user_model.js')
+
+exports.dashboard = (req, res) => {
+
+    res.render('user_admin/views/dashboard', {
+        page_title : "Pengajian Pernak Pernik",
+        current_user: {
+            username    : "Abu Abdirohman",
+            photo       : "default.jpeg"
+        }
+    });
+}
+
+exports.logout = (req, res) => {
+
+    req.session.current_user = null
+    res.redirect('/login')
+}
 
 exports.manage_all_event_head = (req, res) => {
 
@@ -28,6 +45,10 @@ exports.manage_audience = (req, res) => {
 
 exports.manage_all_audience_head = (req, res) => {
     
+    if(req.method == 'GET') {
+
+        res.render('/user_admin/managements/manage_all_audience_head')
+    }
 }
 
 exports.manage_all_audience = (req, res) => {
@@ -38,7 +59,7 @@ exports.manage_all_meta_index = (req, res) => {
     
 }
 
-exports.dashboard = (req, res) => {
-    
-    res.render('user_admin/views/dashboard')
+exports.presence_board = (req, res) => {
+
+    res.render('user_public/presence_board')
 }
