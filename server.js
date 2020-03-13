@@ -6,6 +6,7 @@ var body_parser = require('body-parser')
 var flash = require('express-flash')
 var session = require('express-session')
 var middlewares = require('./configs/middlewares.js')
+var user_session = require('./libs/user_session_lib.js')
 
 app = express()
 port = 3000
@@ -17,6 +18,7 @@ app.use(body_parser.json())
 app.use(express.static('statics'))
 app.use(flash())
 app.use(session({secret: 'secret'}))
+app.use(user_session.user_session)
 
 // route middlewares
 app.use('/dashboard', middlewares.auth_user)

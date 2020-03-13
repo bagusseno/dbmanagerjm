@@ -26,7 +26,7 @@ exports.login = async (req, res) => {
 
             } else {
 
-                req.flash('user_validation_message', 'Invalid username or password!')
+                req.flash('login_status', 'invalid_password')
                 res.render('auth/login')
             }
         }
