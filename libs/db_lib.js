@@ -23,6 +23,16 @@ module.exports.init_default = (exports, table_name) => {
             return false
         })
     }
+
+    exports.get_by_id = (id) => {
+
+        return knex(table_name).where('id', id)
+        .catch((e) => {
+    
+            console.log(e);
+            return false
+        })
+    }
     
     exports.add = (data) => {
 

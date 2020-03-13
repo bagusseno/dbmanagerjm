@@ -9,8 +9,3 @@ exports.get_all_by_user_id = (user_id) => {
 
     return knex(table_name).where('user_id', user_id)
 }
-
-exports.get_by_id = (id) => {
-
-    return knex(table_name).where('id', id)
-}

@@ -18,7 +18,7 @@ module.exports = function(app) {
 	app.all("/admin/manage/audience-databases/:audience_head_id", user_admin_controller.manage_all_audience)
 	app.all("/admin/manage/event-heads", user_admin_controller.manage_all_event_head)
 	app.all("/admin/manage/event-heads/:event_head_id", user_admin_controller.manage_all_event)
-	app.all("/admin/manage/meta/:event_head_id", user_admin_controller.manage_all_meta_index_audience)
+	app.all("/admin/manage/meta/:audience_head_id", user_admin_controller.manage_all_audience_meta_index)
 
 	// function routes
 	app.all("/admin/logout", user_admin_controller.logout)
