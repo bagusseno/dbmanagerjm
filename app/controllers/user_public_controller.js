@@ -40,5 +40,17 @@ exports.login = async (req, res) => {
 
 exports.register = (req, res) => {
 
-    res.render('auth/register')
+    res.render('auth/register', {
+            page_title: 'Register'
+        })
 }
+
+// exports.presence_board = (req, res) => {
+//   res.render("user_public/presence_board", {
+//     title_event: "Pengajian Pernak Pernik",
+//     current_user: {
+//       username: "Abu Abdirohman",
+//       photo: "default.jpeg"
+//     }
+//   });
+// };
