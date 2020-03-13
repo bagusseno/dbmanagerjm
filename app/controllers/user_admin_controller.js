@@ -47,7 +47,7 @@ exports.manage_all_audience_head = (req, res) => {
     
     if(req.method == 'GET') {
 
-        res.render('/user_admin/managements/manage_all_audience_head')
+        res.render('user_admin/managements/manage_all_audience_head')
     }
 }
 
