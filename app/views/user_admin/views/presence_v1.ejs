@@ -17,7 +17,7 @@
         }
 
         .link-class:hover {
-            background-color: #e36565;
+            background-color: #4e73df;
         }
 
         .list-group-item {
@@ -26,7 +26,13 @@
             padding: 10px 15px;
             margin-bottom: -1px;
             background-color: transparent;
-            border: 1px solid #0066cc;
+            border: 1px solid #4e73df;
+        }
+
+        .btn-absensi {
+            background: #4e73df;
+            color: #000000;
+            border: 2px solid #4e73df !important;
         }
     </style>
 
@@ -49,7 +55,7 @@
 
 </head>
 
-<body>
+<body class="bg-gradient-primary">
 
     <!-- <div class="page-inner"> -->
     <nav class="gtco-nav" role="navigation">
@@ -69,7 +75,8 @@
         </div>
     </nav>
 
-    <header id="gtco-header" class="gtco-cover gtco-cover-md" role="banner" style="background-image: url(<%= config.hostname %>/assets/img/bg/abcd.jpg)" data-stellar-background-ratio="0.5">
+    <header id="gtco-header" class="gtco-cover gtco-cover-md" role="banner" style="background-color:#4e73df" data-stellar-background-ratio="0.5">
+        <!-- "background-image: url(<%= config.hostname %>/assets/img/bg/abcd.jpg)" -->
         <!-- <div class="overlay"></div> -->
         <div class="gtco-container">
             <div class="row">
@@ -102,7 +109,7 @@
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <button type="submit" name="submit"
-                                                    class="btn btn-primary btn-block">Submit</button>
+                                                    class="btn btn-absensi btn-block">Submit</button>
                                             </div>
                                         </div>
                                         </form>
