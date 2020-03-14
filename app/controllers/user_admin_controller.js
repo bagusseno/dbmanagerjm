@@ -698,21 +698,23 @@ exports.manage_all_audience_meta_index = async (req, res) => {
     res.render('user_admin/managements/manage_all_audience_meta_index', {
         page_title: 'Manage all meta',
         audience_meta_index: audience_meta_index, 
-        current_user: {
-          username: "Abu Abdirohman",
-          photo: "default.jpeg"
-        }
       }
     )
 }
 
 exports.presence_v1 = (req, res) => {
     
-    res.render('user_admin/views/presence_v1')
+    res.render('user_admin/views/presence_v1', {
+        page_title: 'Presence'
+    })
 }
-
 
 exports.presence_v2 = (req, res) => {
 
-  res.render("user_admin/views/presence_v2")
+    var audiences = await audience_model.get_all_by_event_id(req.params.event_id)
+
+    res.render("user_admin/views/presence_v2",  {
+        page_title: 'Presence',
+        audiences: audiences
+    })
 };
