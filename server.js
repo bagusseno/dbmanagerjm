@@ -24,7 +24,7 @@ app.use(session({secret: 'secret'}))
 app.use(user_session.user_session)
 
 // route middlewares
-app.use('/dashboard', middlewares.auth_user)
+// app.use('/dashboard', middlewares.auth_user)
 app.use('/logout', middlewares.auth_user)
 
 app.use('/login', middlewares.restrict_logged_in_user)

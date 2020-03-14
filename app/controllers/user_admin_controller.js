@@ -336,8 +336,13 @@ exports.manage_all_audience_head = async (req, res) => {
     }
 
     res.render('user_admin/managements/manage_all_audience_head', {
-        page_title: 'Manage all audience head'
-    })
+        page_title: 'Manage All Audience Head',
+        current_user: {
+          username: "Abu Abdirohman",
+          photo: "default.jpeg"
+        }
+      }
+    );
 }
 
 exports.manage_all_audience = async (req, res) => {
@@ -692,11 +697,22 @@ exports.manage_all_audience_meta_index = async (req, res) => {
 
     res.render('user_admin/managements/manage_all_audience_meta_index', {
         page_title: 'Manage all meta',
-        audience_meta_index: audience_meta_index
-    })
+        audience_meta_index: audience_meta_index, 
+        current_user: {
+          username: "Abu Abdirohman",
+          photo: "default.jpeg"
+        }
+      }
+    )
 }
 
-exports.view_report = async (req, res) => {
-
-    res.render('user_admin/')
+exports.presence_v1 = (req, res) => {
+    
+    res.render('user_admin/views/presence_v1')
 }
+
+
+exports.presence_v2 = (req, res) => {
+
+  res.render("user_admin/views/presence_v2")
+};

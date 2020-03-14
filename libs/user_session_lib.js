@@ -2,6 +2,7 @@
 
 var current_user_schema = {
     email: null,
+    photo: null
 }
 
 exports.user_session = (req, res, next) => {

@@ -1,0 +1,56 @@
+<%- include('../../templates/header') %>
+
+<nav class="navbar navbar-light bg-light justify-content-between">
+    <a class="navbar-brand">Pengajian Pernak Pernik</a>
+    <a class="form-inline navbar-brand">Bandung Selatan 2</a>
+</nav>
+
+<body class="bg-gradient-primary">
+  <div class="container" style="margin-top: 200px" >
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+      <div class="col-lg-12 ">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+          <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+              <div class="col-lg">
+                <div class="p-5">
+                  <div class="text-center" >
+                    <h1 class="h2 text-gray-900 mb-4">
+                      Silahkan Masukkan Nama Anda
+                    </h1>
+                  </div>
+                  <form class="user">
+                    <div class="form-group">
+                      <input
+                        type="text"
+                        class="form-control form-control-lg form-control-user text-center"
+                        id="name"
+                        placeholder="Masukkan Nama Anda"
+                      />
+
+                        <ul class="list-group" id="result">
+                            <li class="list-group-item link-class">Abu Abdirohman</li>
+                            <li class="list-group-item link-class">Abu Abdirohman</li>
+                            <li class="list-group-item link-class">Abu Abdirohman</li>
+                        </ul>
+                        </div>
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-user btn-block"
+                    >
+                      Submit
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('../../templates/footer') %>
+</body>
