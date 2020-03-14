@@ -238,5 +238,5 @@ exports.manage_all_audience_meta_index = async (req, res) => {
 
 exports.presence_board = (req, res) => {
     
-    res.render('user_admin/views/presence_board')
+    res.render('user_admin/views/presence')
 }
