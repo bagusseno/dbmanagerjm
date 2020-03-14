@@ -10,7 +10,8 @@ module.exports = function(app) {
 	// user public views
 	app.all("/login", user_public_controller.login)
 	app.all("/register", user_public_controller.register)
-	app.all("/presence/:event_id", user_admin_controller.presence_board)
+	app.all("/presence_v1/:event_id", user_admin_controller.presence_v1)
+	app.all("/presence_v2/:event_id", user_admin_controller.presence_v2)
 
 	// user admin views
 	app.all("/admin/dashboard", user_admin_controller.dashboard)

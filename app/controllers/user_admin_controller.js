@@ -312,7 +312,15 @@ exports.manage_all_audience_meta_index = async (req, res) => {
     })
 }
 
-exports.presence_board = (req, res) => {
+exports.presence_v1 = (req, res) => {
     
-    res.render('user_admin/views/presence')
+    res.render('user_admin/views/presence_v1')
 }
+
+
+exports.presence_v2 = (req, res) => {
+  res.render("user_admin/views/presence_v2", {
+        page_title: 'Presence',
+        current_user: 'Abu Abdirohman'
+    })
+};
