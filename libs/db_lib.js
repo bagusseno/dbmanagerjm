@@ -45,7 +45,7 @@ module.exports.init_default = (exports, table_name) => {
     }
     
     exports.remove = (id) => {
-    
+                
         return knex(table_name).where('id', id).del()
         .catch((e) => {
             
@@ -55,7 +55,7 @@ module.exports.init_default = (exports, table_name) => {
     }
     
     exports.update = (id, data) => {
-    
+        
         return knex(table_name).where('id', id).update(data)
         .catch((e) => {
             
