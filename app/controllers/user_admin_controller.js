@@ -14,12 +14,9 @@ var presence_model = require('../models/presence_model.js')
 // user public
 exports.dashboard = (req, res) => {
 
-    res.render('user_admin/views/dashboard', {
-        page_title : "Pengajian Pernak Pernik",
-        current_user: {
-            username    : "Abu Abdirohman",
-            photo       : "default.jpeg"
-        }
+    res.render("user_admin/views/dashboard", {
+      page_title: "Pengajian Pernak Pernik",
+      req: req
     });
 }
 
@@ -68,10 +65,11 @@ exports.presence_board = async (req, res) => {
     // get all audiences data based on event head id
     var audiences = await audience_model.get_all_by_event_id(req.params.event_id)
 
-    res.render('user_admin/views/presence_board', {
-        page_title: 'Presensi',
-        audiences: audiences
-    })
+    res.render("user_admin/views/presence_board", {
+        page_title: "Presensi",
+        audiences: audiences,
+        req: req
+    });
 }
 
 // logout
@@ -142,9 +140,10 @@ exports.manage_all_event_head = async (req, res) => {
         }   
     }
 
-    res.render('user_admin/managements/manage_all_event_head', {
-        page_title: 'Manage all audience heads'
-    })
+    res.render("user_admin/managements/manage_all_event_head", {
+      page_title: "Manage all audience heads",
+      req: req
+    });
 }
 
 exports.manage_all_event = async (req, res) => {
@@ -209,9 +208,10 @@ exports.manage_all_event = async (req, res) => {
         }   
     }
 
-    res.render('user_admin/managements/manage_all_event_head', {
-        page_title: 'Manage all events'
-    })
+    res.render("user_admin/managements/manage_all_event", {
+      page_title: "Manage all events",
+      req: req
+    });
 }
 
 exports.manage_event = async (req, res) => {
@@ -276,9 +276,10 @@ exports.manage_event = async (req, res) => {
         }   
     }
 
-    res.render('user_admin/managements/manage_event', {
-        page_title: 'Manage event'
-    })
+    res.render("user_admin/managements/manage_event", {
+        page_title: "Manage event",
+        req: req
+    });
 }
 
 // audience heads and audiences
@@ -337,10 +338,7 @@ exports.manage_all_audience_head = async (req, res) => {
 
     res.render('user_admin/managements/manage_all_audience_head', {
         page_title: 'Manage All Audience Head',
-        current_user: {
-          username: "Abu Abdirohman",
-          photo: "default.jpeg"
-        }
+        req: req
       }
     );
 }
@@ -518,9 +516,10 @@ exports.manage_all_audience = async (req, res) => {
         }   
     }
 
-    res.render('user_admin/managements/manage_all_audience', {
-        page_title: 'Manage all audience',
-    })
+    res.render("user_admin/managements/manage_all_audience", {
+      page_title: "Manage all audience",
+      req: req
+    });
 }
 
 exports.manage_audience = async (req, res) => {
@@ -624,9 +623,10 @@ exports.manage_audience = async (req, res) => {
         }   
     }
 
-    res.render('user_admin/managements/manage_audience', {
-        page_title: 'Manage audience',
-    })
+    res.render("user_admin/managements/manage_audience", {
+      page_title: "Manage audience",
+      req: req
+    });
 }
 
 exports.manage_all_audience_by_event_head_id = async (req, res) => {
@@ -698,10 +698,7 @@ exports.manage_all_audience_meta_index = async (req, res) => {
     res.render('user_admin/managements/manage_all_audience_meta_index', {
         page_title: 'Manage all meta',
         audience_meta_index: audience_meta_index, 
-        current_user: {
-          username: "Abu Abdirohman",
-          photo: "default.jpeg"
-        }
+        req: req
       }
     )
 }
@@ -714,5 +711,7 @@ exports.presence_v1 = (req, res) => {
 
 exports.presence_v2 = (req, res) => {
 
-  res.render("user_admin/views/presence_v2")
+  res.render("user_admin/views/presence_v2", {
+    page_title: "PRESENCE"
+  });
 };
