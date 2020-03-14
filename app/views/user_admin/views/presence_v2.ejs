@@ -1,5 +1,11 @@
 <%- include('../../templates/header') %>
 
+<script>
+  var audiences = <%- JSON.stringify(audiences) %>
+  var current_selected_audience_id = 0
+  var event_id = <%- event_id %>
+</script>
+
 <nav class="navbar navbar-light justify-content-between">
     <a class="navbar-brand text-white-900 col-sm-4 col-xs-12">Pengajian Pernak Pernik</a>
     <a class="form-inline navbar-brand text-white-900 col-xs-8 text-right menu-1">Bandung Selatan 2</a>
@@ -32,18 +38,7 @@
                         style="text-transform: uppercase;"
                       />
                         <ul class="list-group" id="result">
-                            <li class="list-group-item link-class presence-item">
-                              BAGUS SENO PAMUNGKAS
-                              <span class="audience-info">LAKI-LAKI</span>
-                              <span class="audience-info">SOREANG</span>
-                              <span class="audience-info">WARLOB 1</span>
-                            </li>
-                            <li class="list-group-item link-class presence-item">
-                              ABU ABDIROHMAN
-                              <span class="audience-info">LAKI-LAKI</span>
-                              <span class="audience-info">SOREANG</span>
-                              <span class="audience-info">WARLOB 1</span>
-                            </li>
+                            
                         </ul>
                         </div>
                     <!-- <button
@@ -80,23 +75,23 @@
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="gender">Jenis Kelamin</label>
-                        <select name="gender" id="gender" class="form-control">
-                          <option value="LK">Laki Laki</option>
-                          <option value="PR">Perempuan</option>
+                        <select name="audience_meta_values" id="gender" class="form-control">
+                          <option value="LAKI-LAKI">Laki-Laki</option>
+                          <option value="PEREMPUAN">Perempuan</option>
                         </select>
                       </div>
                     </div>
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="desa">Desa</label>
-                        <select id="desa" name="desa" onchange="tampilkan()" class="form-control">
+                        <select id="desa" name="audience_meta_values" class="form-control">
                           <option value=""></option>
-                          <option value="Banjaran">Banjaran</option>
-                          <option value="Baleendah">Baleendah</option>
-                          <option value="Ciparay">Ciparay</option>
-                          <option value="Majalaya">Majalaya</option>
-                          <option value="Sayati">Sayati</option>
-                          <option value="Soreang">Soreang</option>
+                          <option value="BANJARAN">Banjaran</option>
+                          <option value="BALEENDAH">Baleendah</option>
+                          <option value="CIPARAY">Ciparay</option>
+                          <option value="MAJALAYA">Majalaya</option>
+                          <option value="SAYATI">Sayati</option>
+                          <option value="SOREANG">Soreang</option>
                         </select>
                       </div>
                     </div>
@@ -144,19 +139,13 @@
                         <input type="text" id="ttl" name="ttl" class="form-control" autocomplete="off">
                       </div>
                     </div>
-                    <div class="row form-group">
-                      <div class="col-md-12">
-                        <label for="umur">Umur</label>
-                        <input type="text" id="umur" name="umur" class="form-control" autocomplete="off">
-                      </div>
-                    </div>
                   
                     
                     <div class="row form-group">
                       <div class="col-md-12">
                         <!--<input type="submit" name="register" class="btn btn-primary btn-block" value="Submit">-->
-                        <button type="submit" name="submit" class="btn btn-primary btn-user btn-block text-center">Submit</button>
-                        <button type="submit" name="submit" id="cancel" class="btn btn-primary btn-user btn-block text-center" style="border-color: red; background: red!important
+                        <button type="submit" name="submit" id="presence-btn" class="btn btn-primary btn-user btn-block text-center">Submit</button>
+                        <button type="submit" name="submit" id="cancel-btn" class="btn btn-primary btn-user btn-block text-center" style="border-color: red; background: red!important
                         ">Cancel</button>
                       </div>
                     </div>

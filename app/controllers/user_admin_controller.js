@@ -726,6 +726,7 @@ exports.presence_v2 = async (req, res) => {
     
     res.render("user_admin/views/presence_v2",  {
         page_title: 'Presence',
-        audiences: audiences
+        audiences: audiences,
+        event_id: req.params.event_id
     })
 };

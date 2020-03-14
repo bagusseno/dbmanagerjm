@@ -24,7 +24,7 @@ module.exports = function(app) {
 	app.all("/admin/manage/event-heads/:event_head_id", user_admin_controller.manage_all_event)
 
 	// user APIs
-	app.post("/admin/manage/audience-databases", user_admin_api_controller.presence)
+	app.post("/admin/api/presence", user_admin_api_controller.presence)
 
 	// meta views
 	app.all("/admin/manage/meta/:audience_head_id", user_admin_controller.manage_all_audience_meta_index)
