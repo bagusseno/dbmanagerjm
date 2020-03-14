@@ -15,10 +15,13 @@ module.exports = function(app) {
 
 	// user admin views
 	app.all("/admin/dashboard", user_admin_controller.dashboard)
+	// audience views
 	app.all("/admin/manage/audience-databases", user_admin_controller.manage_all_audience_head)
 	app.all("/admin/manage/audience-databases/:audience_head_id", user_admin_controller.manage_all_audience)
+	// event views
 	app.all("/admin/manage/event-heads", user_admin_controller.manage_all_event_head)
 	app.all("/admin/manage/event-heads/:event_head_id", user_admin_controller.manage_all_event)
+	// meta views
 	app.all("/admin/manage/meta/:audience_head_id", user_admin_controller.manage_all_audience_meta_index)
 
 	// function routes

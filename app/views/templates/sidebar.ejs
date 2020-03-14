@@ -2,7 +2,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<%= config.hostname %>/admin/dashboard">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laptop-code"></i>
         </div>
@@ -14,7 +14,7 @@
 
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="<%= config.hostname %>/admin/dashboard">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span></a>
     </li>
@@ -36,9 +36,9 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Event:</h6>
-                <a class="collapse-item" href="">Event Head</a>
-                <a class="collapse-item" href="">Event Child</a>
+                <h6 class="collapse-header">Management Event:</h6>
+                <a class="collapse-item" href="<%= config.hostname %>/admin/manage/event-heads">Manage All Event Head</a>
+                <a class="collapse-item" href="<%= config.hostname %>/admin/manage/event-heads/:event_head_id">Manage All Event</a>
             </div>
         </div>
     </li>
@@ -53,8 +53,8 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom Audience:</h6>
-                <a class="collapse-item" href="">Add Audience</a>
-                <a class="collapse-item" href="">Update Audience</a>
+                <a class="collapse-item" href="<%= config.hostname %>/admin/manage/audience-databases">Audience Databases</a>
+                <a class="collapse-item" href="<%= config.hostname %>/admin/manage/audience-databases/:audience_head_id">Managa All Audience</a>
             </div>
         </div>
     </li>
