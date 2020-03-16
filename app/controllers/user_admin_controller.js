@@ -65,7 +65,7 @@ exports.presence_board = async (req, res) => {
     // get all audiences data based on event head id
     var audiences = await audience_model.get_all_by_event_id(req.params.event_id)
 
-    res.render("user_admin/views/presence_board", {
+    res.render("user_admin/views/presence_v2/2", {
         page_title: "Presensi",
         audiences: audiences,
         req: req
@@ -517,7 +517,7 @@ exports.manage_all_audience = async (req, res) => {
     }
 
     res.render("user_admin/managements/manage_all_audience", {
-      page_title: "Manage all audience",
+      page_title: "Manage All Audience",
       req: req
     });
 }
@@ -624,17 +624,20 @@ exports.manage_audience = async (req, res) => {
     }
 
     res.render("user_admin/managements/manage_audience", {
-      page_title: "Manage audience",
+      page_title: "Manage Audience",
       req: req
     });
 }
 
 exports.manage_all_audience_by_event_head_id = async (req, res) => {
-    
+        
 }
 
 exports.manage_all_audience_by_audience_head_id = async (req, res) => {
-    
+    res.render("user_admin/managements/manage_all_audience_by_audience_head_id", {
+      page_title: "Manage All Audience By Audience Head ID",
+      req: req
+    });
 }
 
 exports.manage_all_audience_meta_index = async (req, res) => {
@@ -705,13 +708,36 @@ exports.manage_all_audience_meta_index = async (req, res) => {
 
 exports.presence_v1 = (req, res) => {
     
-    res.render('user_admin/views/presence_v1')
+    res.render('user_admin/views/presence_v1', {
+        page_title: 'Presence'
+    })
 }
 
+exports.presence_v2 = async (req, res) => {
 
-exports.presence_v2 = (req, res) => {
+    var event_head = await event_model.get_by_id(req.params.event_id)
+    var event_head_id = null;
+    console.log(event_head)
 
-  res.render("user_admin/views/presence_v2", {
-    page_title: "PRESENCE"
-  });
+    if(event_head[0] != undefined) {
+
+        event_head_id = event_head[0].id
+
+            var audiences = await audience_model.get_all_with_audience_meta_values_by_event_head_id(event_head_id)
+
+            res.render("user_admin/views/presence_v2",  {
+            page_title: 'Presence',
+            audiences: audiences,
+            event_id: req.params.event_id
+    })
+    } else {
+
+        // req.flash('presence_status', 'not found')   
+        
+        res.render("layout/404", {
+            page_title: 'Error 404',
+            req: req
+        })
+    }
+    
 };

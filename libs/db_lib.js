@@ -5,7 +5,7 @@ var knex = require('knex') ({
     connection  : {
         host        : 'localhost',
         user        : 'root',
-        password    : '',
+        password    : 'root',
         database    : 'absensi_jokam' 
     }
 })

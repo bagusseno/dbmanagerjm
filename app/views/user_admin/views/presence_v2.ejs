@@ -1,4 +1,10 @@
-<%- include('../../templates/header') %>
+<%- include('../../layout/header') %>
+
+<script>
+  var audiences = <%- JSON.stringify(audiences) %>
+  var current_selected_audience_id = 0
+  var event_id = <%- event_id %>
+</script>
 
 <body class="bg-gradient-primary">
   <div class="container" >
@@ -27,18 +33,7 @@
                         style="text-transform: uppercase;"
                       />
                         <ul class="list-group" id="result">
-                            <li class="list-group-item link-class presence-item">
-                              BAGUS SENO PAMUNGKAS
-                              <span class="audience-info">LAKI-LAKI</span>
-                              <span class="audience-info">SOREANG</span>
-                              <span class="audience-info">WARLOB 1</span>
-                            </li>
-                            <li class="list-group-item link-class presence-item">
-                              ABU ABDIROHMAN
-                              <span class="audience-info">LAKI-LAKI</span>
-                              <span class="audience-info">SOREANG</span>
-                              <span class="audience-info">WARLOB 1</span>
-                            </li>
+                            
                         </ul>
                         </div>
                   </form>
@@ -50,7 +45,7 @@
             <hr class="sidebar-divider my-0 ">
             
             <!-- Nested Row within Card Body -->
-            <div id="register" class="row" style="display:none">
+            <div id="register" class="row animate-box" data-animate-effect="fadeInUp" style="display:none">
               <div class="col-lg">
                 <div class="p-5">
                   <div class="text-center">
@@ -59,53 +54,56 @@
                     </h1>
                   </div>
                   <form action="" method="post" id="form1" name="form1" autocomplete="off">
-                  
+            
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="nama">NAMA LENGKAP</label>
-                        <input type="text" id="nama" name="nama" class="form-control" autocomplete="off">
+                        <input type="text" id="nama" name="nama" class="form-control" autocomplete="off" style="text-transform: uppercase">
                       </div>
                     </div>
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="gender">JENIS KELAMIN</label>
-                        <select name="gender" id="gender" class="form-control">
-                          <option value="LK">LAKI-LAKI</option>
-                          <option value="PR">PEREMPUAN</option>
+                        <select name="audience_meta_values" id="gender" class="form-control">
+                          <option value="" disabled selected></option>
+                          <option value="LAKI-LAKI">LAKI-LAKI</option>
+                          <option value="PEREMPUAN">PEREMPUAN</option>
                         </select>
                       </div>
                     </div>
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="desa">DESA</label>
-                        <select id="desa" name="desa" onchange="tampilkan()" class="form-control">
-                          <option value=""></option>
-                          <option value="Banjaran">BANJARAN</option>
-                          <option value="Baleendah">BALEENDAH</option>
-                          <option value="Ciparay">CIPARAY</option>
-                          <option value="Majalaya">MAJALAYA</option>
-                          <option value="Sayati">SAYATI</option>
-                          <option value="Soreang">SOREANG</option>
+                        <select id="desa" name="audience_meta_values" class="form-control">
+                          <option value="" disabled selected></option>
+                          <option value="BANJARAN">BANJARAN</option>
+                          <option value="BALEENDAH">BALEENDAH</option>
+                          <option value="CIPARAY">CIPARAY</option>
+                          <option value="MAJALAYA">MAJALAYA</option>
+                          <option value="SAYATI">SAYATI</option>
+                          <option value="SOREANG">SOREANG</option>
                         </select>
                       </div>
                     </div>
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="kelompok">KELOMPOK</label>
-                        <select id="kelompok" name="kelompok" class="form-control"></select>
-                        <!--<input type="text" id="alamat" name="alamat" class="form-control">-->
+                        <select id="kelompok" name="kelompok" class="form-control">
+                          <option value="" disabled selected></option>
+                        </select>
                       </div>
                     </div>
-                    
+            
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="pendidikan">JENJANG PENDIDIKAN</label>
                         <select name="pendidikan" id="pendidikan" class="form-control">
+                          <option value="" disabled selected></option>
                           <option value="SMP">SMP</option>
                           <option value="SMA">SMA</option>
                           <option value="SMK">SMK</option>
-                          <option value="SMP">KULIAH</option>
-                          <option value="SMA">LULUS/KERJA</option>
+                          <option value="KULIAH">KULIAH</option>
+                          <option value="LULUS/KERJA">LULUS/KERJA</option>
                         </select>
                       </div>
                     </div>
@@ -113,42 +111,82 @@
                       <div class="col-md-12">
                         <label for="kelas">KELAS/TINGKATAN</label>
                         <select name="kelas" id="kelas" class="form-control">
+                          <option value="" disabled selected></option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col-md-4">
+                        <label for="ttl">TANGGAL LAHIR</label>
+                        <select name="ttl" id="ttl-tgl" class="form-control">
+                          <option value="" disabled selected></option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
                           <option value="7">7</option>
                           <option value="8">8</option>
                           <option value="9">9</option>
                           <option value="10">10</option>
                           <option value="11">11</option>
                           <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                          <option value="21">21</option>
+                          <option value="22">22</option>
+                          <option value="23">23</option>
+                          <option value="24">24</option>
+                          <option value="25">25</option>
+                          <option value="26">26</option>
+                          <option value="27">27</option>
+                          <option value="28">28</option>
+                          <option value="29">29</option>
+                          <option value="30">30</option>
+                          <option value="31">31</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="ttl">BULAN LAHIR</label>
+                        <select name="ttl" id="ttl-bulan" class="form-control">
+                          <option value="" disabled selected></option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
                           <option value="4">4</option>
-                          <option value="LULUS/KERJA">LULUS/KERJA</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
                         </select>
                       </div>
-                    </div>
-                    <div class="row form-group">
-                      <div class="col-md-12">
-                        <label for="ttl">TANGGAL LAHIR</label>
-                        <input type="text" id="ttl" name="ttl" class="form-control" autocomplete="off">
+                      <div class="col-md-4">
+                        <label for="ttl">TAHUN LAHIR</label>
+                        <input type="text" id="ttl-tahun" name="ttl" class="form-control" autocomplete="off">
                       </div>
                     </div>
+            
+            
                     <div class="row form-group">
                       <div class="col-md-12">
-                        <label for="umur">UMUR</label>
-                        <input type="text" id="umur" name="umur" class="form-control" autocomplete="off">
+                        <button type="submit" name="submit" id="presence-btn"
+                          class="btn btn-primary btn-user btn-block text-center">SUBMIT</button>
+                        <button type="submit" name="submit" id="cancel-btn" class="btn btn-primary btn-user btn-block text-center"
+                          style="border-color: #e74a3b; background: #e74a3b!important">CANCEL</button>
                       </div>
                     </div>
-                  
-                    
-                    <div class="row form-group">
-                      <div class="col-md-12">
-                        <!--<input type="submit" name="register" class="btn btn-primary btn-block" value="Submit">-->
-                        <button type="submit" name="submit" class="btn btn-primary btn-user btn-block text-center">SUBMIT</button>
-                        <button type="submit" name="submit" id="cancel" class="btn btn-primary btn-user btn-block text-center" style="border-color:#e74a3b; background: #e74a3b!important
-                        ">CANCEL</button>
-                      </div>
-                    </div>
+
                   </form>
                 </div>
               </div>
@@ -161,6 +199,6 @@
     </div>
   </div>
 
-  <%- include('../../templates/footer') %>
+  <%- include('../../layout/footer') %>
   <script src="<%= config.hostname %>/assets/js/presence.js"></script>
 </body>

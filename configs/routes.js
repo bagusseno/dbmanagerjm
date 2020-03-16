@@ -6,6 +6,7 @@ module.exports = function(app) {
     // view controllers
 	var user_public_controller = require("../app/controllers/user_public_controller.js")
     var user_admin_controller = require("../app/controllers/user_admin_controller.js")
+    var user_admin_api_controller = require("../app/controllers/user_admin_api_controller.js")
     
 	// user public views
 	app.all("/login", user_public_controller.login)
@@ -15,11 +16,16 @@ module.exports = function(app) {
 
 	// user admin views
 	app.all("/admin/dashboard", user_admin_controller.dashboard)
-	// audience views
+
+	// user admin views and managements
 	app.all("/admin/manage/audience-databases", user_admin_controller.manage_all_audience_head)
 	app.all("/admin/manage/audience-databases/:audience_head_id", multer.any(), user_admin_controller.manage_all_audience)
 	app.all("/admin/manage/event-heads", user_admin_controller.manage_all_event_head)
 	app.all("/admin/manage/event-heads/:event_head_id", user_admin_controller.manage_all_event)
+
+	// user APIs
+	app.post("/admin/api/presence", user_admin_api_controller.presence)
+
 	// meta views
 	app.all("/admin/manage/meta/:audience_head_id", user_admin_controller.manage_all_audience_meta_index)
 
