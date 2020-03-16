@@ -20,56 +20,33 @@ exports.dashboard = (req, res) => {
     });
 }
 
-exports.presence_board = async (req, res) => {
-    
-    if(req.method == 'POST') {
+exports.presence = async (req, res) => {
 
-        switch(req.body.action) {
+    var event_head = await event_model.get_by_id(req.params.event_id)
+    var event_head_id = null;
+    console.log(event_head)
 
-            case 'presence':
+    if (event_head[0] != undefined) {
 
-                if(isset(req.body.audience_id, req.body.event_id)) {
+        event_head_id = event_head[0].id
 
-                    var query = await presence_model.add({
-                        audience_id: req.body.audience_id,
-                        event_id: req.body.event_id,
-                        status: 'present' 
-                    })
+        var audiences = await audience_model.get_all_with_audience_meta_values_by_event_head_id(event_head_id)
 
-                    if(query)
-                        req.flash('query_status', 'success')
-                    else    
-                        req.flash('query_status', 'failed')
-                }
+        res.render("user_admin/views/presence", {
+            page_title: 'Presence',
+            audiences: audiences,
+            event_id: req.params.event_id
+        })
+    } else {
 
-            case 'permit':
+        // req.flash('presence_status', 'not found')   
 
-                if(isset(req.body.audience_id, req.body.event_id)) {
-
-                    var query = await presence_model.add({
-                        audience_id: req.body.audience_id,
-                        event_id: req.body.event_id,
-                        status: 'permit' 
-                    })
-
-                    if(query)
-                        req.flash('query_status', 'success')
-                    else    
-                        req.flash('query_status', 'failed')
-                }
-
-        }
+        res.render("layout/404", {
+            page_title: 'Error 404',
+            req: req
+        })
     }
 
-
-    // get all audiences data based on event head id
-    var audiences = await audience_model.get_all_by_event_id(req.params.event_id)
-
-    res.render("user_admin/views/presence_v2/2", {
-        page_title: "Presensi",
-        audiences: audiences,
-        req: req
-    });
 }
 
 // logout
@@ -705,39 +682,3 @@ exports.manage_all_audience_meta_index = async (req, res) => {
       }
     )
 }
-
-exports.presence_v1 = (req, res) => {
-    
-    res.render('user_admin/views/presence_v1', {
-        page_title: 'Presence'
-    })
-}
-
-exports.presence_v2 = async (req, res) => {
-
-    var event_head = await event_model.get_by_id(req.params.event_id)
-    var event_head_id = null;
-    console.log(event_head)
-
-    if(event_head[0] != undefined) {
-
-        event_head_id = event_head[0].id
-
-            var audiences = await audience_model.get_all_with_audience_meta_values_by_event_head_id(event_head_id)
-
-            res.render("user_admin/views/presence_v2",  {
-            page_title: 'Presence',
-            audiences: audiences,
-            event_id: req.params.event_id
-    })
-    } else {
-
-        // req.flash('presence_status', 'not found')   
-        
-        res.render("layout/404", {
-            page_title: 'Error 404',
-            req: req
-        })
-    }
-    
-};
