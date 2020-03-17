@@ -93,14 +93,4 @@ module.exports.init_default = (exports, table_name) => {
             return false
         })
     }
-
-    exports.count_where = (where_query) => {
-
-        return knex(table_name).count('*').where(where_query)
-        .catch((e) => {
-            
-            console.log(e);
-            return false
-        })
-    }
 }

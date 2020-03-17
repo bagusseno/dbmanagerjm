@@ -31,26 +31,26 @@ $(document).ready(function() {
                 $("#presence").hide();
                 $("#register").show();
 
-                var audience = audiences.find(row => { row.id == 5})
-                console.log(audiences)
-
+                var audience = audiences[$(this).attr('data-id')-1]
                 current_selected_audience_id = $(this).attr('data-id')
 
                 $("#nama").val(audience.name)
                 $("#gender").val(audience['jenis kelamin'])
                 $("#desa").val(audience.desa)
                 $("#desa").change()
-                $("#pendidikan").change()
                 $("#pendidikan").val(audience['jenjang pendidikan'])
+		$("#pendidikan").change()
                 $("#kelas").val(audience['kelas/tingkatan'])
                 $("#kelompok").val(audience.kelompok)
 
                 var ttl_moment = moment(audience['tanggal lahir'], 'DD/MM/YYYY')
                 var ttl = ttl_moment.toDate()
-                                
+                
+		if(!isNaN(ttl.getDate())) {              
                 $('#ttl-tgl').val(ttl.getDate())
                 $('#ttl-bulan').val(ttl.getMonth())
                 $('#ttl-tahun').val(ttl.getFullYear())
+		}
             })
         })
 
@@ -169,6 +169,7 @@ $(document).ready(function() {
                 $("#kelompok").append('<option value="PALASARI">PALASARI</option>')
                 $("#kelompok").append('<option value="PPM">PPM</option>')
                 $("#kelompok").append('<option value="MANGGAHANG">MANGGAHANG</option>')
+		        $("#kelompok").append('<option value="PONDOK">PONDOK</option>')
                 break
 
             case 'BANJARAN':
@@ -176,12 +177,13 @@ $(document).ready(function() {
                 $("#kelompok").append('<option value="CIMAUNG">CIMAUNG</option>')
                 $("#kelompok").append('<option value="NAMBO">NAMBO</option>')
                 $("#kelompok").append('<option value="PANGALENGAN">PANGALENGAN</option>')
+                $("#kelompok").append('<option value="CIJULANG">CIJULANG</option>')
                 break
 
             case 'CIPARAY':
                 $("#kelompok").append('<option value="BARUJATI">BARUJATI</option>')
                 $("#kelompok").append('<option value="CIDAWOLONG">CIDAWOLONG</option>')
-                $("#kelompok").append('<option value="CIPAKU"><CIPAKU/option>')
+                $("#kelompok").append('<option value="CIPAKU">CIPAKU</option>')
                 $("#kelompok").append('<option value="KBSI">KBSI</option>')
                 break
         
@@ -189,13 +191,20 @@ $(document).ready(function() {
                 $("#kelompok").append('<option value="BOJONG">BOJONG</option>')
                 $("#kelompok").append('<option value="HAURBUYUT">HAURBUYUT</option>')
                 $("#kelompok").append('<option value="MUARA">MUARA</option>')
+                $("#kelompok").append('<option value="PONGPORANG">PONGPORANG</option>')
+                $("#kelompok").append('<option value="SUKMA 1">SUKMA 1</option>')
+                $("#kelompok").append('<option value="SUKMA 2">SUKMA 2</option>')
+                $("#kelompok").append('<option value="SUKMA 3">SUKMA 3</option>')
                 break
 
             case 'SAYATI':
                 $("#kelompok").append('<option value="BURUJUL">BURUJUL</option>')
                 $("#kelompok").append('<option value="CIBADUYUT">CIBADUYUT</option>')
                 $("#kelompok").append('<option value="KOPER">KOPER</option>')
-                $("#kelompok").append('<option value="MAPER"><MAPER/option>')
+                $("#kelompok").append('<option value="MAPER">MAPER</option>')
+                $("#kelompok").append('<option value="MARKEN">MARKEN</option>')
+                $("#kelompok").append('<option value="PERMAKO">PERMAKO</option>')
+                $("#kelompok").append('<option value="TKI">TKI</option>')
                 break
 
             case 'SOREANG':
@@ -203,45 +212,8 @@ $(document).ready(function() {
                 $("#kelompok").append('<option value="JUNTI">JUNTI</option>')
                 $("#kelompok").append('<option value="SOREANG 1">SOREANG 1</option>')
                 $("#kelompok").append('<option value="SOREANG 2">SOREANG 2</option>')
-                $("#kelompok").append('<option value="WARLOB 1">WARLOB 1r</option>')
+                $("#kelompok").append('<option value="WARLOB 1">WARLOB 1</option>')
                 $("#kelompok").append('<option value="WARLOB 2">WARLOB 2</option>')
-                break
-        }
-    })
-
-    $("#pendidikan").change(() => {
-
-        $("#kelas").html("")
-
-        switch($("#pendidikan").val()) {
-
-            case 'SMP':
-                $("#kelas").append('<option value="7">7</option>')
-                $("#kelas").append('<option value="8">8</option>')
-                $("#kelas").append('<option value="9">9</option>')
-                break
-
-            case 'SMK':
-                $("#kelas").append('<option value="10">10</option>')
-                $("#kelas").append('<option value="11">11</option>')
-                $("#kelas").append('<option value="12">12</option>')
-                break
-
-            case 'SMA':
-                $("#kelas").append('<option value="10">10</option>')
-                $("#kelas").append('<option value="11">11</option>')
-                $("#kelas").append('<option value="12">12</option>')
-                break
-        
-            case 'KULIAH':
-                $("#kelas").append('<option value="1">1</option>')
-                $("#kelas").append('<option value="2">2</option>')
-                $("#kelas").append('<option value="3">3</option>')
-                $("#kelas").append('<option value="4">4</option>')
-                break
-
-            case 'LULUS/KERJA':
-                $("#kelas").append('<option value="LULUS/KERJA">LULUS/KERJA</option>')
                 break
         }
     })

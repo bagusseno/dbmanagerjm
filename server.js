@@ -22,6 +22,11 @@ app.use(express.static('statics'))
 app.use(flash())
 app.use(session({secret: 'secret'}))
 app.use(user_session.user_session)
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 // route middlewares
 // app.use('/dashboard', middlewares.auth_user)

@@ -716,7 +716,7 @@ exports.presence_v2 = async (req, res) => {
     var event_head_id = null;
 
     if(event) {
-        event_head_id = event[0].event_head_id
+        event_head_id = event[0].id
     }
     else
         req.flash('presence_status', 'not found')    
@@ -733,27 +733,3 @@ exports.presence_v2 = async (req, res) => {
         event_id: req.params.event_id,
     })
 };
-
-exports.report = async (req, res) => {
-
-    var event = await event_model.get_by_id(req.params.event_id)
-    var event_head_id = null;
-    var event_id = 0;
-
-    if(event) {
-        event_head_id = event[0].event_head_id
-    }
-    else
-        req.flash('presence_status', 'not found') 
-
-    var event_head = await event_head_model.get_by_id(event_head_id)
-    var audience_head_id = event_head[0].audience_head_id
-
-    var total_audiences = await audience_model.count_where({
-        audience_head_id: audience_head_id
-    })[0]
-
-    var total_presents = await presence_model.custom_get({
-        event_id: req.params.event_id
-    })
-}
