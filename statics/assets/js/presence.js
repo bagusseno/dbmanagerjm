@@ -18,31 +18,53 @@ $(document).ready(function() {
 
         found_audiences.forEach((v,k) => {
 
-            $("#result").append('<li data-id=' + v.id + ' class="list-group-item link-class presence-item">'
+            $("#result").append('<li data-id=' + v.id + ' class="list-group-item link-class presence-item-css presence-item">'
                 + v.name
                 + '<span class="audience-info">' + v.desa + '</span>'
                 + '<span class="audience-info">' + v.kelompok + '</span>'
                 + '</li>')
 
             $(".presence-item").click(function() {
-    
+                
+                current_registration_state = 'update'
+
                 $("#presence").hide();
                 $("#register").show();
 
-                var audience = audiences[$(this).attr('data-id')-1]
+                var audience = audiences.find(row => { row.id == 5})
+                console.log(audiences)
+
                 current_selected_audience_id = $(this).attr('data-id')
 
                 $("#nama").val(audience.name)
                 $("#gender").val(audience['jenis kelamin'])
                 $("#desa").val(audience.desa)
                 $("#desa").change()
+                $("#pendidikan").change()
                 $("#pendidikan").val(audience['jenjang pendidikan'])
                 $("#kelas").val(audience['kelas/tingkatan'])
-                $("#ttl").val(audience['tanggal lahir'])
                 $("#kelompok").val(audience.kelompok)
+
+                var ttl_moment = moment(audience['tanggal lahir'], 'DD/MM/YYYY')
+                var ttl = ttl_moment.toDate()
+                                
+                $('#ttl-tgl').val(ttl.getDate())
+                $('#ttl-bulan').val(ttl.getMonth())
+                $('#ttl-tahun').val(ttl.getFullYear())
             })
         })
+
+        $("#result").prepend('<li id="new-registration" class="list-group-item link-class presence-item-css">'
+                + '<font color=green>Belum ada namanya? Klik di sini untuk registrasi! :)</font>'
+                + '</li>')
         
+        $("#new-registration").click(() => {
+
+            $("#presence").hide();
+            $("#register").show();
+
+            current_registration_state = 'register'
+        })
     })
 
     $("#presence-btn").click((e) => {
@@ -51,10 +73,15 @@ $(document).ready(function() {
 
         $('#presence-btn').attr('disabled', true)
 
+        var ttl_string = $("#ttl-tgl").val() + '/' + $("#ttl-bulan").val() + '/' + $("#ttl-tahun").val() 
+        var ttl_moment = moment(ttl_string, 'DD/MM/YYYY')
+
         $.ajax({
-            url: 'http://localhost:3000/admin/api/presence',
+            url: 'http://194.59.165.27:3000/admin/api/presence',
             method: 'POST',
             data: {
+                registration_state: current_registration_state,
+                audience_head_id: audience_head_id,
                 event_id: event_id,
                 audience_id: current_selected_audience_id,
                 status: 'present',
@@ -82,7 +109,11 @@ $(document).ready(function() {
                     },
                     {
                         audience_meta_index_id: 7,
-                        value: $('#ttl').val()
+                        value: ttl_string
+                    },
+                    {
+                        audience_meta_index_id: 8,
+                        value: ttl_moment.diff(moment(), 'years')
                     },
                 ]
             }
@@ -92,10 +123,16 @@ $(document).ready(function() {
 
             if(res.status) {
 
-                alert('Berhasil presensi')
-
-                $("#presence").show()
+                $("#success-msg").show()
+                $("#presence").hide()
                 $("#register").hide()
+
+                setTimeout(() => {
+                   
+                    $("#success-msg").hide()
+                    $("#presence").show()
+                    $("#register").hide()
+                }, 2000)
 
                 $("#nama").val('')
                 $("#gender").val('')
@@ -106,12 +143,13 @@ $(document).ready(function() {
                 $("#ttl").val('')
                 $("#kelompok").val('')
 
-                $("#presence-btn").attr("disabled", false)
                 $("#name").val('')
                 $("#result").html('')
-
+                
                 current_selected_audience_id = 0
             }
+
+            $("#presence-btn").attr("disabled", false)
         })
     })
     
@@ -125,9 +163,11 @@ $(document).ready(function() {
                 $("#kelompok").append('<option value="CIPBAR">CIPBAR</option>')
                 $("#kelompok").append('<option value="CIPTIM">CIPTIM</option>')
                 $("#kelompok").append('<option value="KERTAMANAH">KERTAMANAH</option>')
+                $("#kelompok").append('<option value="KPM">KPM</option>')
                 $("#kelompok").append('<option value="MUNJUL">MUNJUL</option>')
                 $("#kelompok").append('<option value="DAYEUHKOLOT">DAYEUHKOLOT</option>')
                 $("#kelompok").append('<option value="PALASARI">PALASARI</option>')
+                $("#kelompok").append('<option value="PPM">PPM</option>')
                 $("#kelompok").append('<option value="MANGGAHANG">MANGGAHANG</option>')
                 break
 
@@ -165,6 +205,80 @@ $(document).ready(function() {
                 $("#kelompok").append('<option value="SOREANG 2">SOREANG 2</option>')
                 $("#kelompok").append('<option value="WARLOB 1">WARLOB 1r</option>')
                 $("#kelompok").append('<option value="WARLOB 2">WARLOB 2</option>')
+                break
+        }
+    })
+
+    $("#pendidikan").change(() => {
+
+        $("#kelas").html("")
+
+        switch($("#pendidikan").val()) {
+
+            case 'SMP':
+                $("#kelas").append('<option value="7">7</option>')
+                $("#kelas").append('<option value="8">8</option>')
+                $("#kelas").append('<option value="9">9</option>')
+                break
+
+            case 'SMK':
+                $("#kelas").append('<option value="10">10</option>')
+                $("#kelas").append('<option value="11">11</option>')
+                $("#kelas").append('<option value="12">12</option>')
+                break
+
+            case 'SMA':
+                $("#kelas").append('<option value="10">10</option>')
+                $("#kelas").append('<option value="11">11</option>')
+                $("#kelas").append('<option value="12">12</option>')
+                break
+        
+            case 'KULIAH':
+                $("#kelas").append('<option value="1">1</option>')
+                $("#kelas").append('<option value="2">2</option>')
+                $("#kelas").append('<option value="3">3</option>')
+                $("#kelas").append('<option value="4">4</option>')
+                break
+
+            case 'LULUS/KERJA':
+                $("#kelas").append('<option value="LULUS/KERJA">LULUS/KERJA</option>')
+                break
+        }
+    })
+
+    $("#pendidikan").change(() => {
+
+        $("#kelas").html("")
+
+        switch($("#pendidikan").val()) {
+
+            case 'SMP':
+                $("#kelas").append('<option value="7">7</option>')
+                $("#kelas").append('<option value="8">8</option>')
+                $("#kelas").append('<option value="9">9</option>')
+                break
+
+            case 'SMK':
+                $("#kelas").append('<option value="10">10</option>')
+                $("#kelas").append('<option value="11">11</option>')
+                $("#kelas").append('<option value="12">12</option>')
+                break
+
+            case 'SMA':
+                $("#kelas").append('<option value="10">10</option>')
+                $("#kelas").append('<option value="11">11</option>')
+                $("#kelas").append('<option value="12">12</option>')
+                break
+        
+            case 'KULIAH':
+                $("#kelas").append('<option value="1">1</option>')
+                $("#kelas").append('<option value="2">2</option>')
+                $("#kelas").append('<option value="3">3</option>')
+                $("#kelas").append('<option value="4">4</option>')
+                break
+
+            case 'LULUS/KERJA':
+                $("#kelas").append('<option value="LULUS/KERJA">LULUS/KERJA</option>')
                 break
         }
     })

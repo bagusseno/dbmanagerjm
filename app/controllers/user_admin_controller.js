@@ -712,21 +712,48 @@ exports.presence_v1 = (req, res) => {
 
 exports.presence_v2 = async (req, res) => {
 
-    var event_head = await event_model.get_by_id(req.params.event_id)
+    var event = await event_model.get_by_id(req.params.event_id)
     var event_head_id = null;
 
-    if(event_head)
-        event_head_id = event_head[0].id
+    if(event) {
+        event_head_id = event[0].event_head_id
+    }
     else
         req.flash('presence_status', 'not found')    
+    
+    var event_head = await event_head_model.get_by_id(event_head_id)
+    var audience_head_id = event_head[0].audience_head_id
 
     var audiences = await audience_model.get_all_with_audience_meta_values_by_event_head_id(event_head_id)
-
-    console.log('adasd' + JSON.stringify(audiences[0]));
     
     res.render("user_admin/views/presence_v2",  {
+        audience_head_id: audience_head_id,
         page_title: 'Presence',
         audiences: audiences,
-        event_id: req.params.event_id
+        event_id: req.params.event_id,
     })
 };
+
+exports.report = async (req, res) => {
+
+    var event = await event_model.get_by_id(req.params.event_id)
+    var event_head_id = null;
+    var event_id = 0;
+
+    if(event) {
+        event_head_id = event[0].event_head_id
+    }
+    else
+        req.flash('presence_status', 'not found') 
+
+    var event_head = await event_head_model.get_by_id(event_head_id)
+    var audience_head_id = event_head[0].audience_head_id
+
+    var total_audiences = await audience_model.count_where({
+        audience_head_id: audience_head_id
+    })[0]
+
+    var total_presents = await presence_model.custom_get({
+        event_id: req.params.event_id
+    })
+}

@@ -1,0 +1,6 @@
+.presence-item-css:hover {
+
+    cursor: pointer;
+    background: #c1d1ff;
+    user-select: none;
+}

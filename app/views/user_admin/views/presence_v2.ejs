@@ -1,31 +1,52 @@
 <%- include('../../templates/header') %>
 
 <script>
+    var audience_head_id = <%- audience_head_id %>
+</script>
+<script>
   var audiences = <%- JSON.stringify(audiences) %>
   var current_selected_audience_id = 0
   var event_id = <%- event_id %>
+  var current_registration_state = ''
 </script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js'></script>
 
 <nav class="navbar navbar-light justify-content-between">
-    <a class="navbar-brand text-white-900 col-sm-4 col-xs-12">Pengajian Pernak Pernik</a>
-    <a class="form-inline navbar-brand text-white-900 col-xs-8 text-right menu-1">Bandung Selatan 2</a>
+    <a class="navbar-brand text-white-900 col-sm-4 col-xs-12" style="color:white">PENGAJIAN PERNAK PERNIK</a>
+    <a class="form-inline navbar-brand text-white-900 col-xs-8 text-right menu-1" style="color:white">BANDUNG SELATAN 2</a>
 </nav>
 
 <body class="bg-gradient-primary">
   <div class="container" >
     <!-- Outer Row -->
-    <div class="row justify-content-center animate-box" data-animate-effect="fadeInUp">
+    <div class="row justify-content-center">
       <div class="col-lg-12">
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
             
-            <!-- Nested Row within Card Body -->
-            <div id="presence" class="row">
+             <!-- Nested Row within Card Body -->
+             <div id="success-msg" class="row animate-box" data-animate-effect="fadeInUp" style="display:none">
               <div class="col-lg">
                 <div class="p-5">
                   <div class="text-center" >
                     <h1 class="mb-4 font-size: 120px" style="font-size:59px; font-family:Kaushan Script" >
-                      Silahkan Masukkan Nama Anda
+                      Presensi Berhasil, Silakan Mengaji!
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Nested Row within Card Body -->
+
+            <hr class="sidebar-divider my-0 ">
+
+            <!-- Nested Row within Card Body -->
+            <div id="presence" class="row animate-box" data-animate-effect="fadeInUp">
+              <div class="col-lg">
+                <div class="p-5">
+                  <div class="text-center" >
+                    <h1 class="mb-4 font-size: 120px" style="font-size:59px; font-family:Kaushan Script" >
+                      Silakan Masukkan Nama Anda
                     </h1>
                   </div>
                   <form class="user">
@@ -38,15 +59,8 @@
                         style="text-transform: uppercase;"
                       />
                         <ul class="list-group" id="result">
-                            
                         </ul>
                         </div>
-                    <!-- <button
-                      type="submit"
-                      class="btn btn-primary btn-user btn-block"
-                    >
-                      Submit
-                    </button> -->
                   </form>
                 </div>
               </div>
@@ -56,28 +70,29 @@
             <hr class="sidebar-divider my-0 ">
             
             <!-- Nested Row within Card Body -->
-            <div id="register" class="row" style="display:none">
+            <div id="register" class="row animate-box" data-animate-effect="fadeInUp" style="display:none">
               <div class="col-lg">
                 <div class="p-5">
                   <div class="text-center">
                     <h1 class="mb-4 font-size: 120px" style="font-size:59px; font-family:Kaushan Script">
-                      Silahkan Lenkapi Isi Form nya
+                      Silakan Lengkapi Form nya
                     </h1>
                   </div>
                   <form action="" method="post" id="form1" name="form1" autocomplete="off">
                   
                     <div class="row form-group">
                       <div class="col-md-12">
-                        <label for="nama">Nama Lengkap</label>
+                        <label for="nama">NAMA LENGKAP</label>
                         <input type="text" id="nama" name="nama" class="form-control" autocomplete="off">
                       </div>
                     </div>
                     <div class="row form-group">
                       <div class="col-md-12">
-                        <label for="gender">Jenis Kelamin</label>
+                        <label for="gender">JENIS KELAMIN</label>
                         <select name="audience_meta_values" id="gender" class="form-control">
-                          <option value="LAKI-LAKI">Laki-Laki</option>
-                          <option value="PEREMPUAN">Perempuan</option>
+                          <option value="" disabled selected></option>
+                          <option value="LAKI-LAKI">LAKI-LAKI</option>
+                          <option value="PEREMPUAN">PEREMPUAN</option>
                         </select>
                       </div>
                     </div>
@@ -85,68 +100,67 @@
                       <div class="col-md-12">
                         <label for="desa">Desa</label>
                         <select id="desa" name="audience_meta_values" class="form-control">
-                          <option value=""></option>
-                          <option value="BANJARAN">Banjaran</option>
-                          <option value="BALEENDAH">Baleendah</option>
-                          <option value="CIPARAY">Ciparay</option>
-                          <option value="MAJALAYA">Majalaya</option>
-                          <option value="SAYATI">Sayati</option>
-                          <option value="SOREANG">Soreang</option>
+                          <option value="" disabled selected></option>
+                          <option value="BANJARAN">BANJARAN</option>
+                          <option value="BALEENDAH">BALEENDAH</option>
+                          <option value="CIPARAY">CIPARAY</option>
+                          <option value="MAJALAYA">MAJALAYA</option>
+                          <option value="SAYATI">SAYATI</option>
+                          <option value="SOREANG">SOREANG</option>
                         </select>
                       </div>
                     </div>
                     <div class="row form-group">
                       <div class="col-md-12">
-                        <label for="kelompok">Kelompok</label>
-                        <select id="kelompok" name="kelompok" class="form-control"></select>
-                        <!--<input type="text" id="alamat" name="alamat" class="form-control">-->
+                        <label for="kelompok">KELOMPOK</label>
+                        <select id="kelompok" name="kelompok" class="form-control">
+                          <option value="" disabled selected></option>
+                        </select>
                       </div>
                     </div>
                     
                     <div class="row form-group">
                       <div class="col-md-12">
-                        <label for="pendidikan">Jenjang Pendidikan</label>
+                        <label for="pendidikan">JENJANG PENDIDIKAN</label>
                         <select name="pendidikan" id="pendidikan" class="form-control">
+                          <option value="" disabled selected></option>
                           <option value="SMP">SMP</option>
                           <option value="SMA">SMA</option>
                           <option value="SMK">SMK</option>
-                          <option value="SMP">KULIAH</option>
-                          <option value="SMA">LULUS/KERJA</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="row form-group">
-                      <div class="col-md-12">
-                        <label for="kelas">Kelas/Tingkatan</label>
-                        <select name="kelas" id="kelas" class="form-control">
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
+                          <option value="KULIAH">KULIAH</option>
                           <option value="LULUS/KERJA">LULUS/KERJA</option>
                         </select>
                       </div>
                     </div>
                     <div class="row form-group">
                       <div class="col-md-12">
-                        <label for="ttl">Tanggal Lahir</label>
-                        <input type="text" id="ttl" name="ttl" class="form-control" autocomplete="off">
+                        <label for="kelas">KELAS/TINGKATAN</label>
+                        <select name="kelas" id="kelas" class="form-control">
+                          <option value="" disabled selected></option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row form-group">
+                      <div class="col-md-4">
+                        <label for="ttl">TANGGAL LAHIR</label>
+                        <input type="text" id="ttl-tgl" name="ttl" class="form-control" autocomplete="off">
+                      </div>
+                      <div class="col-md-4">
+                        <label for="ttl">BULAN LAHIR</label>
+                        <input type="text" id="ttl-bulan" name="ttl" class="form-control" autocomplete="off">
+                      </div>
+                      <div class="col-md-4">
+                        <label for="ttl">TAHUN LAHIR</label>
+                        <input type="text" id="ttl-tahun" name="ttl" class="form-control" autocomplete="off">
                       </div>
                     </div>
                   
                     
                     <div class="row form-group">
                       <div class="col-md-12">
-                        <!--<input type="submit" name="register" class="btn btn-primary btn-block" value="Submit">-->
-                        <button type="submit" name="submit" id="presence-btn" class="btn btn-primary btn-user btn-block text-center">Submit</button>
-                        <button type="submit" name="submit" id="cancel-btn" class="btn btn-primary btn-user btn-block text-center" style="border-color: red; background: red!important
-                        ">Cancel</button>
+                        <button type="submit" name="submit" id="presence-btn" class="btn btn-primary btn-user btn-block text-center">SUBMIT</button>
+                        <button type="submit" name="submit" id="cancel-btn" class="btn btn-primary btn-user btn-block text-center" style="border-color: #e74a3b; background: #e74a3b!important
+                        ">CANCEL</button>
                       </div>
                     </div>
                   </form>
