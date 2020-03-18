@@ -9,7 +9,6 @@ var middlewares = require('./configs/middlewares.js')
 var user_session = require('./libs/user_session_lib.js')
 
 app = express()
-port = 354
 config = require('./configs/app_configs.js').config.development
 multer = require('multer')({
     dest: './data/uploads'
@@ -39,7 +38,7 @@ app.use('/register', middlewares.restrict_logged_in_user)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'app/views'))
 
-app.listen(port)
+app.listen(config.port)
 
 var routes = require('./configs/routes.js')
 routes(app)
