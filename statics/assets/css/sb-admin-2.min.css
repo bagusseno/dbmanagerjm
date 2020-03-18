@@ -23,3 +23,6 @@
     font-size:12px;
     margin-left:15px;
 }
+tr>th{
+    vertical-align: middle!important;
+}

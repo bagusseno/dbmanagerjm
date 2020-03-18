@@ -14,7 +14,7 @@ exports.get_all_with_audience_meta_values_by_event_head_id = async (event_head_i
     console.log(audience_head_id);
     
     if(audience_head_id)
-        audience_head_id = audience_head_id[0].audience_head_id
+        audience_head_id = audience_head_id.audience_head_id
     
     var audience_meta_indexes = await audience_meta_index_model.get_all_by_audience_head_id(audience_head_id)
     console.log('am' + JSON.stringify(audience_meta_indexes));
@@ -35,7 +35,7 @@ exports.get_all_with_audience_meta_values_by_event_head_id = async (event_head_i
         })
     }
 
-    query.where('event_head.id', event_head_id)
+    query.where('event_head.id', 2)
 
     console.log('Q' + query);
     

@@ -1,14 +1,10 @@
 'use strict'
 
-var knex = require('knex') ({
-    client      : 'mysql',
-    connection  : {
-        host        : 'localhost',
-        user        : 'root',
-        password    : '',
-        database    : 'absensi_jokam' 
-    }
-})
+var config = require('../configs/app_configs.js').config
+
+console.log(config.development);
+
+var knex = require('knex') (config.development.db)
 
 module.exports = knex
 
@@ -27,6 +23,9 @@ module.exports.init_default = (exports, table_name) => {
     exports.get_by_id = (id) => {
 
         return knex(table_name).where('id', id)
+        .then((r) => {
+            return r[0]
+        })
         .catch((e) => {
     
             console.log(e);

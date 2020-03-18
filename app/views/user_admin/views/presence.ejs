@@ -1,20 +1,13 @@
-<%- include('../../templates/header') %>
+<%- include('../../layout/header') %>
 
 <script>
-    var audience_head_id = <%- audience_head_id %>
-</script>
-<script>
+  var audience_head_id = <%- audience_head_id %>
   var audiences = <%- JSON.stringify(audiences) %>
   var current_selected_audience_id = 0
   var event_id = <%- event_id %>
   var current_registration_state = ''
 </script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js'></script>
-
-<nav class="navbar navbar-light justify-content-between">
-    <a class="navbar-brand text-white-900 col-sm-4 col-xs-12" style="color:white">PENGAJIAN PERNAK PERNIK</a>
-    <a class="form-inline navbar-brand text-white-900 col-xs-8 text-right menu-1" style="color:white">BANDUNG SELATAN 2</a>
-</nav>
 
 <body class="bg-gradient-primary">
   <div class="container" >
@@ -45,7 +38,7 @@
               <div class="col-lg">
                 <div class="p-5">
                   <div class="text-center" >
-                    <h1 class="mb-4 font-size: 120px" style="font-size:59px; font-family:Kaushan Script" >
+                    <h1 class="mb-4" style="font-size:3rem; font-family:Kaushan Script" >
                       Silakan Masukkan Nama Anda
                     </h1>
                   </div>
@@ -79,11 +72,11 @@
                     </h1>
                   </div>
                   <form action="" method="post" id="form1" name="form1" autocomplete="off">
-                  
+            
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="nama">NAMA LENGKAP</label>
-                        <input type="text" id="nama" name="nama" class="form-control" autocomplete="off">
+                        <input type="text" id="nama" name="nama" class="form-control" autocomplete="off" style="text-transform: uppercase">
                       </div>
                     </div>
                     <div class="row form-group">
@@ -118,7 +111,7 @@
                         </select>
                       </div>
                     </div>
-                    
+            
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="pendidikan">JENJANG PENDIDIKAN</label>
@@ -143,7 +136,7 @@
                     <div class="row form-group">
                       <div class="col-md-4">
                         <label for="ttl">TANGGAL LAHIR</label>
-                       <select name="ttl" id="ttl-tgl" class="form-control">
+                        <select name="ttl" id="ttl-tgl" class="form-control">
                           <option value="" disabled selected></option>
                           <option value="1">1</option>
                           <option value="2">2</option>
@@ -175,41 +168,43 @@
                           <option value="28">28</option>
                           <option value="29">29</option>
                           <option value="30">30</option>
-                          <option value="31">31</option>          
+                          <option value="31">31</option>
                         </select>
                       </div>
                       <div class="col-md-4">
                         <label for="ttl">BULAN LAHIR</label>
                         <select name="ttl" id="ttl-bulan" class="form-control">
-                        <option value="" disabled selected></option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-			</select>
+                          <option value="" disabled selected></option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                        </select>
                       </div>
                       <div class="col-md-4">
                         <label for="ttl">TAHUN LAHIR</label>
                         <input type="text" id="ttl-tahun" name="ttl" class="form-control" autocomplete="off">
                       </div>
                     </div>
-                  
-                    
+            
+            
                     <div class="row form-group">
                       <div class="col-md-12">
-                        <button type="submit" name="submit" id="presence-btn" class="btn btn-primary btn-user btn-block text-center">SUBMIT</button>
-                        <button type="submit" name="submit" id="cancel-btn" class="btn btn-primary btn-user btn-block text-center" style="border-color: #e74a3b; background: #e74a3b!important
-                        ">CANCEL</button>
+                        <button type="submit" name="submit" id="presence-btn"
+                          class="btn btn-primary btn-user btn-block text-center">SUBMIT</button>
+                        <button type="submit" name="submit" id="cancel-btn" class="btn btn-primary btn-user btn-block text-center"
+                          style="border-color: #e74a3b; background: #e74a3b!important">CANCEL</button>
                       </div>
                     </div>
+
                   </form>
                 </div>
               </div>
@@ -222,6 +217,6 @@
     </div>
   </div>
 
-  <%- include('../../templates/footer') %>
+  <%- include('../../layout/footer') %>
   <script src="<%= config.hostname %>/assets/js/presence.js"></script>
 </body>

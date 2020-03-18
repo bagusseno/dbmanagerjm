@@ -9,7 +9,7 @@ var middlewares = require('./configs/middlewares.js')
 var user_session = require('./libs/user_session_lib.js')
 
 app = express()
-port = 3000
+port = 354
 config = require('./configs/app_configs.js').config.development
 multer = require('multer')({
     dest: './data/uploads'

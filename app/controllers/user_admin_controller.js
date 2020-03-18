@@ -20,56 +20,36 @@ exports.dashboard = (req, res) => {
     });
 }
 
-exports.presence_board = async (req, res) => {
-    
-    if(req.method == 'POST') {
+exports.presence = async (req, res) => {
 
-        switch(req.body.action) {
+    var event = await event_model.get_by_id(req.params.event_id)
 
-            case 'presence':
+    // check if event exists
+    if (event != undefined) {
+        
+        var event_head_id = event.event_head_id        
+        
+        var event_head = await event_head_model.get_by_id(event_head_id)
+        
+        var audience_head_id = event_head.audience_head_id
+        var audiences = await audience_model.get_all_with_audience_meta_values_by_event_head_id(event_head_id)
 
-                if(isset(req.body.audience_id, req.body.event_id)) {
+        res.render("user_admin/views/presence", {
+            page_title: 'Presence',
+            audiences: audiences,
+            event_id: req.params.event_id,
+            audience_head_id: audience_head_id
+        })
+    } else {
 
-                    var query = await presence_model.add({
-                        audience_id: req.body.audience_id,
-                        event_id: req.body.event_id,
-                        status: 'present' 
-                    })
+        // req.flash('presence_status', 'not found')   
 
-                    if(query)
-                        req.flash('query_status', 'success')
-                    else    
-                        req.flash('query_status', 'failed')
-                }
-
-            case 'permit':
-
-                if(isset(req.body.audience_id, req.body.event_id)) {
-
-                    var query = await presence_model.add({
-                        audience_id: req.body.audience_id,
-                        event_id: req.body.event_id,
-                        status: 'permit' 
-                    })
-
-                    if(query)
-                        req.flash('query_status', 'success')
-                    else    
-                        req.flash('query_status', 'failed')
-                }
-
-        }
+        res.render("layout/404", {
+            page_title: 'Error 404',
+            req: req
+        })
     }
 
-
-    // get all audiences data based on event head id
-    var audiences = await audience_model.get_all_by_event_id(req.params.event_id)
-
-    res.render("user_admin/views/presence_board", {
-        page_title: "Presensi",
-        audiences: audiences,
-        req: req
-    });
 }
 
 // logout
@@ -517,7 +497,7 @@ exports.manage_all_audience = async (req, res) => {
     }
 
     res.render("user_admin/managements/manage_all_audience", {
-      page_title: "Manage all audience",
+      page_title: "Manage All Audience",
       req: req
     });
 }
@@ -624,17 +604,20 @@ exports.manage_audience = async (req, res) => {
     }
 
     res.render("user_admin/managements/manage_audience", {
-      page_title: "Manage audience",
+      page_title: "Manage Audience",
       req: req
     });
 }
 
 exports.manage_all_audience_by_event_head_id = async (req, res) => {
-    
+        
 }
 
 exports.manage_all_audience_by_audience_head_id = async (req, res) => {
-    
+    res.render("user_admin/managements/manage_all_audience_by_audience_head_id", {
+      page_title: "Manage All Audience By Audience Head ID",
+      req: req
+    });
 }
 
 exports.manage_all_audience_meta_index = async (req, res) => {
@@ -702,34 +685,3 @@ exports.manage_all_audience_meta_index = async (req, res) => {
       }
     )
 }
-
-exports.presence_v1 = (req, res) => {
-    
-    res.render('user_admin/views/presence_v1', {
-        page_title: 'Presence'
-    })
-}
-
-exports.presence_v2 = async (req, res) => {
-
-    var event = await event_model.get_by_id(req.params.event_id)
-    var event_head_id = null;
-
-    if(event) {
-        event_head_id = event[0].id
-    }
-    else
-        req.flash('presence_status', 'not found')    
-    
-    var event_head = await event_head_model.get_by_id(event_head_id)
-    var audience_head_id = event_head[0].audience_head_id
-
-    var audiences = await audience_model.get_all_with_audience_meta_values_by_event_head_id(event_head_id)
-    
-    res.render("user_admin/views/presence_v2",  {
-        audience_head_id: audience_head_id,
-        page_title: 'Presence',
-        audiences: audiences,
-        event_id: req.params.event_id,
-    })
-};

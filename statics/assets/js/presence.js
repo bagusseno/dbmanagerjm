@@ -39,7 +39,7 @@ $(document).ready(function() {
                 $("#desa").val(audience.desa)
                 $("#desa").change()
                 $("#pendidikan").val(audience['jenjang pendidikan'])
-		$("#pendidikan").change()
+		        $("#pendidikan").change()
                 $("#kelas").val(audience['kelas/tingkatan'])
                 $("#kelompok").val(audience.kelompok)
 
