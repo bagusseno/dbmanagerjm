@@ -5093,16 +5093,6 @@ a.badge-dark:focus, a.badge-dark.focus {
   background-color: #fff;
   border: 1px solid rgba(0, 0, 0, 0.125);
 }
-/* .list-group-item {
-      position: relative;
-      display: block;
-      padding: 10px;
-      margin-bottom: -1px;
-      background-color: transparent;
-      border: 1px solid #0066cc;
-      border-radius: 10rem!important;
-      border-color: #4d72de;
-    } */
 
 .list-group-item:first-child {
   border-top-left-radius: 0.35rem;
