@@ -11,54 +11,6 @@ var event_head_model = require('../models/event_head_model.js')
 var event_model = require('../models/event_model.js')
 var presence_model = require('../models/presence_model.js')
 
-// user public
-exports.dashboard = (req, res) => {
-
-    res.render("user_admin/views/dashboard", {
-      page_title: "Pengajian Pernak Pernik",
-      req: req
-    });
-}
-
-exports.presence = async (req, res) => {
-
-    var event = await event_model.get_by_id(req.params.event_id)
-
-    // check if event exists
-    if (event != undefined) {
-        
-        var event_head_id = event.event_head_id        
-        
-        var event_head = await event_head_model.get_by_id(event_head_id)
-        
-        var audience_head_id = event_head.audience_head_id
-        var audiences = await audience_model.get_all_with_audience_meta_values_by_event_head_id(event_head_id)
-
-        res.render("user_admin/views/presence", {
-            page_title: 'Presence',
-            audiences: audiences,
-            event_id: req.params.event_id,
-            audience_head_id: audience_head_id
-        })
-    } else {
-
-        // req.flash('presence_status', 'not found')   
-
-        res.render("layout/404", {
-            page_title: 'Error 404',
-            req: req
-        })
-    }
-
-}
-
-// logout
-exports.logout = (req, res) => {
-
-    req.session.current_user = null
-    res.redirect('/login')
-}
-
 // event heads and events
 exports.manage_all_event_head = async (req, res) => {
 
@@ -414,7 +366,7 @@ exports.manage_all_audience = async (req, res) => {
 
                     if(query) {
 
-                        var audience_meta_values_query = await audience_meta_value_model.custom_remove({
+                        var audience_meta_values_query = await audience_meta_value_model.remove_where({
                             audience_id: req.body.id
                         })
 
@@ -591,7 +543,7 @@ exports.manage_audience = async (req, res) => {
 
                     if(query) {
 
-                        var audience_meta_values_query = await audience_meta_value_model.custom_remove({
+                        var audience_meta_values_query = await audience_meta_value_model.remove_where({
                             audience_id: req.body.id
                         })
 
@@ -684,4 +636,71 @@ exports.manage_all_audience_meta_index = async (req, res) => {
         req: req
       }
     )
+}
+
+// user public
+exports.dashboard = (req, res) => {
+
+    res.render("user_admin/views/dashboard", {
+      page_title: "Pengajian Pernak Pernik",
+      req: req
+    });
+}
+
+exports.presence = async (req, res) => {
+
+    var event = await event_model.get_by_id(req.params.event_id)
+
+    // check if event exists
+    if (!isset(event)) {
+
+        res.render("layout/404", {
+            page_title: 'Error 404',
+            req: req
+        })
+
+        return false
+    }
+        
+    var event_head_id = event.event_head_id        
+    
+    var event_head = await event_head_model.get_by_id(event_head_id)
+    
+    var audience_head_id = event_head.audience_head_id
+    var audiences = await audience_model.get_all_with_audience_meta_by_event_head_id(event_head_id)
+
+    res.render("user_admin/views/presence", {
+        page_title: 'Presence',
+        audiences: audiences,
+        event_id: req.params.event_id,
+        audience_head_id: audience_head_id
+    })
+
+}
+
+// logout
+exports.logout = (req, res) => {
+
+    req.session.current_user = null
+    res.redirect('/login')
+}
+
+exports.report = async (req, res) => {
+
+    // check event existence
+    var event = event_model.get_by_id(event_id)
+
+    if(!isset(event)) {
+
+        res.render("user_admin/views/event_presence_report.ejs", {
+            page_title: 'Event presence report',
+            found: false
+        })
+
+        return false
+    }
+
+    var present_audiences = presence_model.get_all_where({event_id: event_id})
+
+
 }

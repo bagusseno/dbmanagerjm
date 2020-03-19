@@ -51,6 +51,7 @@ exports.presence = async (req, res) => {
             
             res.send(JSON.stringify(response))
         }
+
     } else if(req.body.registration_state == 'register') {
 
         var response = {

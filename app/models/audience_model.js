@@ -7,17 +7,16 @@ var event_head_model = require('./event_head_model.js')
 
 knex.init_default(exports, table_name)
 
-exports.get_all_with_audience_meta_values_by_event_head_id = async (event_head_id) => {
+exports.get_all_with_audience_meta_by_event_head_id = async (event_head_id) => {
     
-    var audience_head_id = await event_head_model.get_by_id(event_head_id)
+    var event_head = await event_head_model.get_by_id(event_head_id)
 
-    console.log(audience_head_id);
-    
-    if(audience_head_id)
-        audience_head_id = audience_head_id.audience_head_id
+    if(!event_head)
+        return false
+
+    audience_head_id = event_head.audience_head_id
     
     var audience_meta_indexes = await audience_meta_index_model.get_all_by_audience_head_id(audience_head_id)
-    console.log('am' + JSON.stringify(audience_meta_indexes));
     
     var query = knex(table_name)
         .select(table_name + '.*')
@@ -36,8 +35,6 @@ exports.get_all_with_audience_meta_values_by_event_head_id = async (event_head_i
     }
 
     query.where('event_head.id', 2)
-
-    console.log('Q' + query);
     
     return query
 }

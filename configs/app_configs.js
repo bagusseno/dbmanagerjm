@@ -1,6 +1,8 @@
 exports.config = {
     development: {
         hostname: 'http://localhost:354',
+        port: 354,
+        socketio_port: 313,
         db: {
             client      : 'mysql',
             connection  : {

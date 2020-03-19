@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    $("#completion-form").parsley()
+
     $("#cancel-btn").click((e) => {
         
         e.preventDefault()
@@ -31,7 +33,7 @@ $(document).ready(function() {
                 $("#presence").hide();
                 $("#register").show();
 
-                var audience = audiences[$(this).attr('data-id')-1]
+                var audience = audiences.find(element => element.id == $(this).attr('data-id'))
                 current_selected_audience_id = $(this).attr('data-id')
 
                 $("#nama").val(audience.name)
@@ -48,7 +50,7 @@ $(document).ready(function() {
                 
 		if(!isNaN(ttl.getDate())) {              
                 $('#ttl-tgl').val(ttl.getDate())
-                $('#ttl-bulan').val(ttl.getMonth())
+                $('#ttl-bulan').val(ttl.getMonth()+1) // getMonth() starts from zero
                 $('#ttl-tahun').val(ttl.getFullYear())
 		}
             })
@@ -149,6 +151,10 @@ $(document).ready(function() {
                 current_selected_audience_id = 0
             }
 
+            $("#presence-btn").attr("disabled", false)
+        }).fail((e) => {
+
+            alert("Terjadi kesalahan. " + e)
             $("#presence-btn").attr("disabled", false)
         })
     })

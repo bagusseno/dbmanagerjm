@@ -4,7 +4,7 @@ init_functions = () => {
 
         for(element in params) {
     
-            if(element == undefined)
+            if(element == undefined || element == null)
                 return false
             
             return true
