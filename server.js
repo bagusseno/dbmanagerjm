@@ -25,6 +25,7 @@ app.use(flash())
 app.use(session({secret: 'secret'}))
 app.use(user_session.user_session)
 app.use(function(req, res, next) {
+
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -35,18 +36,18 @@ app.use('/logout', middlewares.auth_user)
 app.use('/login', middlewares.restrict_logged_in_user)
 app.use('/register', middlewares.restrict_logged_in_user)
 
-// express configs
+// // express configs
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'app/views'))
 require('./configs/routes.js')(app)
 
 // sockets
-io.on('connection', (socket) => {
+// io.on('connection', (socket) => {
 
-    socket.on('new_presence', (presence_data, fn) => {
+//     socket.on('new_presence', (presence_data, fn) => {
 
-        fn(JSON.stringify(presence_data))
-    })
-})
+//         fn(JSON.stringify(presence_data))
+//     })
+// })
 
-app.listen(config.port)
+app.listen(354)

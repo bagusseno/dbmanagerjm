@@ -3,7 +3,6 @@
 var fs = require('fs')
 var csv_string = require('csv-string')
 
-var audience_head_model = require('../models/audience_head_model.js')
 var audience_model = require('../models/audience_model.js')
 var audience_meta_index_model = require('../models/audience_meta_index_model.js')
 var audience_meta_value_model = require('../models/audience_meta_value_model.js')
@@ -214,67 +213,6 @@ exports.manage_event = async (req, res) => {
     });
 }
 
-// audience heads and audiences
-exports.manage_all_audience_head = async (req, res) => {
-    
-    if(req.method == 'POST') {
-
-        // API: Create
-        switch(req.body.action) {
-
-            case 'create':
-
-                if(isset(req.body.name, req.body.user_id)) {
-
-                    var query = await audience_head_model.add({
-                        name: req.body.name,
-                        user_id: req.body.user_id
-                    })
-                    
-                    if(query)
-                        req.flash('query_status', 'success')
-                    else
-                        req.flash('query_status', 'failed')
-                }
-
-                break
-
-            case 'update':
-
-                if(isset(req.body.id, req.body.name)) {
-
-                    var query = await audience_head_model.update(req.body.id, {name: req.body.name})
-
-                    if(query)
-                        req.flash('query_status', 'success')
-                    else
-                        req.flash('query_status', 'failed')
-                }
-
-                break
-
-            case 'delete':
-
-                if(isset(req.body.id)) {
-
-                    var query = await audience_head_model.remove(req.body.id)                            
-
-                    if(query)
-                        req.flash('query_status', 'success')
-                    else
-                        req.flash('query_status', 'failed')
-                }
-
-        }   
-    }
-
-    res.render('user_admin/managements/manage_all_audience_head', {
-        page_title: 'Manage All Audience Head',
-        req: req
-      }
-    );
-}
-
 exports.manage_all_audience = async (req, res) => {
     
     if(req.method == 'POST') {
@@ -286,10 +224,10 @@ exports.manage_all_audience = async (req, res) => {
 
             case 'create':
 
-                if(isset(req.body.audience_head_id, req.body.name)) {
+                if(isset(req.body.name)) {
                                         
                     var audience_id = await audience_model.add({
-                        audience_head_id: req.body.audience_head_id,
+                        user_id: req.get_current_user().id,
                         name: req.body.name
                     })
                     
@@ -318,12 +256,12 @@ exports.manage_all_audience = async (req, res) => {
 
             case 'update':
 
-                if(isset(req.body.id, req.body.audience_head_id, req.body.name)) {
+                if(isset(req.body.id, req.body.name)) {
 
                     var audience_meta_indexes = await audience_meta_index_model.get_all_by_audience_head_id(req.body.audience_head_id)
 
                     var query = await audience_model.update(req.body.id, {
-                        audience_head_id: req.body.audience_head_id,
+                        user_id: req.get_current_user().id,
                         name: req.body.name
                     })
 
@@ -376,8 +314,6 @@ exports.manage_all_audience = async (req, res) => {
                 }
 
             case 'upload_audience_csv':
-
-                console.log('test');
             
                 if(isset(req.body.audience_meta_indexes_order)) {
 
@@ -389,18 +325,14 @@ exports.manage_all_audience = async (req, res) => {
                                                 
                         audience_data = csv_string.parse(audience_data.toString())
 
-                        audience_meta_indexes = await audience_meta_index_model.get_all_by_audience_head_id(req.params.audience_head_id)
+                        audience_meta_indexes = await audience_meta_index_model.get_all_by_user_id(req.get_current_user().id)
                         var audience_meta_indexes_order = req.body.audience_meta_indexes_order.split(',')
-                        console.log(audience_meta_indexes_order);
-                        console.log(audience_meta_indexes);
                         
                         var audience_meta_index_ids_order = []
 
                         for(var i = 0; i < audience_meta_indexes_order.length; i++) {
 
                             for(var j = 0; j < audience_meta_indexes.length; j++) {
-
-                                console.log('tes' + audience_meta_indexes[j].name);
                                 
                                 if(audience_meta_indexes_order[i] == audience_meta_indexes[j].name) {
 
@@ -411,7 +343,6 @@ exports.manage_all_audience = async (req, res) => {
                         }
 
                         console.log(audience_meta_index_ids_order);
-
                         
                         for(var i = 0; i < audience_data.length; i++) {
                                                         
@@ -419,7 +350,7 @@ exports.manage_all_audience = async (req, res) => {
                             
                             // insert the name first
                             var audience_id = await audience_model.add({
-                                audience_head_id: req.params.audience_head_id,
+                                user_id: req.get_current_user().id,
                                 name: audience_data_row[0]
                             })                            
 
@@ -445,6 +376,8 @@ exports.manage_all_audience = async (req, res) => {
                       }
                     })                    
                 }
+
+                break
         }   
     }
 
@@ -466,7 +399,7 @@ exports.manage_audience = async (req, res) => {
                 if(isset(req.body.audience_head_id, req.body.name)) {
                                         
                     var audience_id = await audience_model.add({
-                        audience_head_id: req.body.audience_head_id,
+                        user_id: req.get_current_user().id,
                         name: req.body.name
                     })
                     
@@ -497,10 +430,8 @@ exports.manage_audience = async (req, res) => {
 
                 if(isset(req.body.id, req.body.audience_head_id, req.body.name)) {
 
-                    var audience_meta_indexes = await audience_meta_index_model.get_all_by_audience_head_id(req.body.audience_head_id)
-
                     var query = await audience_model.update(req.body.id, {
-                        audience_head_id: req.body.audience_head_id,
+                        user_id: req.get_current_user().id,
                         name: req.body.name
                     })
 
@@ -581,10 +512,10 @@ exports.manage_all_audience_meta_index = async (req, res) => {
 
             case 'create':
 
-                if(isset(req.body.event_head_id, req.body.name)) {
+                if(isset(req.body.name)) {
                     
                     var query = await audience_meta_index_model.add({
-                        event_head_id: req.body.event_head_id,
+                        user_id: req.get_current_user().id,
                         name: req.body.name
                     })
                     
@@ -660,20 +591,18 @@ exports.presence = async (req, res) => {
         })
 
         return false
-    }
-        
+    }    
+    
+    console.log(isset(event));
+    
     var event_head_id = event.event_head_id        
-    
-    var event_head = await event_head_model.get_by_id(event_head_id)
-    
-    var audience_head_id = event_head.audience_head_id
+        
     var audiences = await audience_model.get_all_with_audience_meta_by_event_head_id(event_head_id)
 
     res.render("user_admin/views/presence", {
         page_title: 'Presence',
         audiences: audiences,
         event_id: req.params.event_id,
-        audience_head_id: audience_head_id
     })
 
 }

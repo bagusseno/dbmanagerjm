@@ -13,15 +13,12 @@ exports.get_all_with_audience_meta_by_event_head_id = async (event_head_id) => {
 
     if(!event_head)
         return false
-
-    audience_head_id = event_head.audience_head_id
     
-    var audience_meta_indexes = await audience_meta_index_model.get_all_by_audience_head_id(audience_head_id)
+    var audience_meta_indexes = await audience_meta_index_model.get_all_by_event_head_id(event_head_id)
     
     var query = knex(table_name)
         .select(table_name + '.*')
-        .join('audience_head', 'audience.audience_head_id', 'audience_head.id')
-        .join('event_head', 'event_head.audience_head_id', 'audience_head.id')
+        .join('event_head', 'event_head.user_id', 'audience.user_id')
 
     for(var i = 0; i < audience_meta_indexes.length; i++) {
         

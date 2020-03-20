@@ -1,4 +1,5 @@
 exports.config = {
+    current_env: 'development',
     development: {
         hostname: 'http://localhost:354',
         port: 354,

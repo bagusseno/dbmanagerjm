@@ -1,6 +1,9 @@
 'use strict'
 
+config = require('../configs/app_configs.js')
+
 var current_user_schema = {
+    id: (config.current_env == 'development' ? 1 : null),
     email: null,
     photo: "default.jpeg"
 }

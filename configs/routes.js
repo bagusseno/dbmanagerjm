@@ -17,7 +17,6 @@ module.exports = function(app) {
 	app.all("/admin/dashboard", user_admin_controller.dashboard)
 
 	// user admin views and managements
-	app.all("/admin/manage/audience-databases", user_admin_controller.manage_all_audience_head)
 	app.all("/admin/manage/audience-databases/:audience_head_id", multer.any(), user_admin_controller.manage_all_audience)
 	app.all("/admin/manage/event-heads", user_admin_controller.manage_all_event_head)
 	app.all("/admin/manage/event-heads/:event_head_id", user_admin_controller.manage_all_event)

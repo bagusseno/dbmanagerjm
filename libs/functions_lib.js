@@ -1,10 +1,10 @@
 init_functions = () => {
     
     isset = (...params) => {
-
-        for(element in params) {
-    
-            if(element == undefined || element == null)
+        
+        for(var key in params) {
+                       
+            if(params[key] == undefined || params[key] == null)
                 return false
             
             return true

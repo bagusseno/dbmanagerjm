@@ -21,6 +21,7 @@ module.exports.init_default = (exports, table_name) => {
 
         return knex(table_name).where('id', id)
             .then((r) => {
+                                
                 return r[0]
             })
             .catch((e) => {

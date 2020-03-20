@@ -6,6 +6,10 @@ var audience_model = require('../models/audience_model.js')
 
 exports.presence = async (req, res) => {
 
+    console.log('adasd')
+
+    res.send('APELO(')
+
     if(req.body.registration_state == 'update') {
 
         if(isset(req.body.event_id, req.body.audience_id, req.body.status, req.body.audience_meta_values)) {
@@ -61,15 +65,23 @@ exports.presence = async (req, res) => {
 
         // inserting new audience
         var audience_id = await audience_model.add({
-            audience_head_id: req.body.audience_head_id,
+            user_id: req.get_current_user().id,
             name: req.body.name
         })
+        console.log('adasd')
+        console.log(audience_id)
         
         if(audience_id) {
+         
             req.flash('query_status', 'success')
             response.status = true
-        } else
+
+        } else {
+
             req.flash('query_status', 'failed')
+            response.status = false
+            response.err = 'ERR_AT_AUDIENCE'
+        }
 
         if(audience_id && req.body.audience_meta_values != null) {
             
@@ -81,8 +93,12 @@ exports.presence = async (req, res) => {
                     value: req.body.audience_meta_values[i].value
                 })
 
-                if(!audience_meta_value_query) 
+                if(!audience_meta_value_query) {
+
                     req.flash('query_status', 'failed at meta values')
+                    response.err = 'ERR_AT_META_VALUES'
+                    response.status = false
+                }
             }
         }
         // end inserting audience

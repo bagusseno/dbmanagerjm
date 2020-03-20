@@ -83,7 +83,6 @@ $(document).ready(function() {
             method: 'POST',
             data: {
                 registration_state: current_registration_state,
-                audience_head_id: audience_head_id,
                 event_id: event_id,
                 audience_id: current_selected_audience_id,
                 status: 'present',
