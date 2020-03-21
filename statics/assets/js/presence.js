@@ -79,7 +79,7 @@ $(document).ready(function() {
         var ttl_moment = moment(ttl_string, 'DD/MM/YYYY')
 
         $.ajax({
-            url: 'http://194.59.165.27:3000/admin/api/presence',
+            url: 'http://localhost:354/admin/api/presence',
             method: 'POST',
             data: {
                 registration_state: current_registration_state,
@@ -151,6 +151,7 @@ $(document).ready(function() {
             }
 
             $("#presence-btn").attr("disabled", false)
+            
         }).fail((e) => {
 
             alert("Terjadi kesalahan. " + e)

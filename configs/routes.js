@@ -11,10 +11,11 @@ module.exports = function(app) {
 	// user public views
 	app.all("/login", user_public_controller.login)
 	app.all("/register", user_public_controller.register)
-	app.all("/presence/:event_id", user_admin_controller.presence)
-
+	app.all('/live-report/:event_id', user_public_controller.live_report)
+	
 	// user admin views
 	app.all("/admin/dashboard", user_admin_controller.dashboard)
+	app.all("/presence/:event_id", user_admin_controller.presence)
 
 	// user admin views and managements
 	app.all("/admin/manage/audience-databases/:audience_head_id", multer.any(), user_admin_controller.manage_all_audience)

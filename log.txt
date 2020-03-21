@@ -1,3 +1,0 @@
-A : Menghapus folder route pada root folder
-B : Membuat folder data dan memindahkan file absensi_jokam.sql ke dalamnya
-B : Membuat file user_admin_api_controller.js

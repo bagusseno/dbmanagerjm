@@ -44,3 +44,8 @@ exports.register = (req, res) => {
             page_title: 'Register'
         })
 }
+
+exports.live_report = async (req, res) => {
+
+    
+}

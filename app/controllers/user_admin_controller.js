@@ -274,7 +274,7 @@ exports.manage_all_audience = async (req, res) => {
                     
                         for(var i = 0; i < req.body.audience_meta_values.length; i++) {
                             
-                            var audience_meta_value_query = await audience_meta_value_model.custom_update({
+                            var audience_meta_value_query = await audience_meta_value_model.update_where({
                                 audience_meta_index_id: req.body.audience_meta_indexes[i],
                                 audience_id: req.body.audience_id
                             }, {
@@ -444,7 +444,7 @@ exports.manage_audience = async (req, res) => {
                     
                         for(var i = 0; i < req.body.audience_meta_values.length; i++) {
                             
-                            var audience_meta_value_query = await audience_meta_value_model.custom_update({
+                            var audience_meta_value_query = await audience_meta_value_model.update_where({
                                 audience_meta_index_id: req.body.audience_meta_indexes[i],
                                 audience_id: req.body.audience_id
                             }, {

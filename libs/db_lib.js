@@ -13,6 +13,8 @@ module.exports.init_default = (exports, table_name) => {
         .catch((e) => {
 
             console.log(e);
+            logger.err('ERR GET ALL: ' + e)
+
             return false
         })
     }
@@ -27,6 +29,8 @@ module.exports.init_default = (exports, table_name) => {
             .catch((e) => {
         
                 console.log(e);
+                logger.err('ERR GET BY ID: ' + e)
+
                 return false
             })
     }
@@ -37,6 +41,8 @@ module.exports.init_default = (exports, table_name) => {
             .catch((e) => {
         
                 console.log(e);
+                logger.err('ERR GET ALL WHERE: ' + e)
+
                 return false
             })
     }
@@ -47,6 +53,8 @@ module.exports.init_default = (exports, table_name) => {
             .catch((e) => {
                 
                 console.log(e);
+                logger.err('ERR ADD: ' + e)
+
                 return false
             })
     }
@@ -57,6 +65,8 @@ module.exports.init_default = (exports, table_name) => {
             .catch((e) => {
                 
                 console.log(e);
+                logger.err('ERR REMOVE: ' + e)
+
                 return false
             })
     }
@@ -67,6 +77,8 @@ module.exports.init_default = (exports, table_name) => {
             .catch((e) => {
                 
                 console.log(e);
+                logger.err('ERR REMOVE WHERE: ' + e)
+
                 return false
             })
     }
@@ -77,16 +89,20 @@ module.exports.init_default = (exports, table_name) => {
             .catch((e) => {
                 
                 console.log(e);
+                logger.err('ERR UPDATE: ' + e)
+
                 return false
             })
     }
 
-    exports.custom_update = (where_query, data) => {
+    exports.update_where = (where_query, data) => {
 
         return knex(table_name).where(where_query).update(data)
             .catch((e) => {
                 
                 console.log(e);
+                logger.err('ERR UPDATE WHERE: ' + e)
+
                 return false
             })
     }

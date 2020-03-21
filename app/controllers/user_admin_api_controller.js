@@ -5,19 +5,12 @@ var audience_meta_value_model = require('../models/audience_meta_value_model.js'
 var audience_model = require('../models/audience_model.js')
 
 exports.presence = async (req, res) => {
-
-    console.log('adasd')
-
-    res.send('APELO(')
+    
+    logger.info('New presence API request', req)
 
     if(req.body.registration_state == 'update') {
 
         if(isset(req.body.event_id, req.body.audience_id, req.body.status, req.body.audience_meta_values)) {
-
-            var response = {
-                status: null,
-                err: [],
-            }
 
             var presence_query = await presence_model.add({
                 event_id: req.body.event_id,
@@ -25,65 +18,48 @@ exports.presence = async (req, res) => {
                 status: req.body.status
             })
 
+            if(!presence_query) {
+
+                res.api.die('ERR_UAAC_FAIL_ADDING_PRESENCE')
+            }
+
             var update_name_query = await audience_model.update(req.body.audience_id, {
                 name: req.body.name
             })
 
-            if(presence_query && update_name_query) {
+            if(!update_name_query)
+                res.api.die('ERR_UAAC_FAIL_UPDATING_AUDIENCE_NAME')
 
-                response.status = true
+            // update data
+            req.body.audience_meta_values.forEach(async (row) => {
 
-                // update data
-                var update_query_status = true;
-
-                req.body.audience_meta_values.forEach(async (row) => {
-
-                    var update_query = await audience_meta_value_model.custom_update({
-                        audience_meta_index_id: row.audience_meta_index_id,
-                        audience_id: req.body.audience_id
-                    }, {
-                        value: row.value
-                    })
-
-                    if(!update_query) {
-
-                        update_query_status = false
-                        array_push(response.err, 'fail updating audience meta value, id: ' + row.id + ' | value: ' + row.value)
-                    }
+                var update_query = await audience_meta_value_model.update_where({
+                    audience_meta_index_id: row.audience_meta_index_id,
+                    audience_id: req.body.audience_id
+                }, {
+                    value: row.value
                 })
-            }   
+
+                if(!update_query)
+                    res.api.die('ERR_UAAC_FAIL_UPDATING_AUDIENCE_META_VALUES')
+            })
             
-            res.send(JSON.stringify(response))
+            res.api.set_status(true)
+            res.api.send_json()
         }
 
     } else if(req.body.registration_state == 'register') {
-
-        var response = {
-            status: null,
-            err: [],
-        }
 
         // inserting new audience
         var audience_id = await audience_model.add({
             user_id: req.get_current_user().id,
             name: req.body.name
         })
-        console.log('adasd')
-        console.log(audience_id)
         
-        if(audience_id) {
-         
-            req.flash('query_status', 'success')
-            response.status = true
+        if(!audience_id)
+            res.api.die('ERR_UAAC_FAIL_ADDING_AUDIENCE')
 
-        } else {
-
-            req.flash('query_status', 'failed')
-            response.status = false
-            response.err = 'ERR_AT_AUDIENCE'
-        }
-
-        if(audience_id && req.body.audience_meta_values != null) {
+        if(req.body.audience_meta_values != null) {
             
             for(var i = 0; i < req.body.audience_meta_values.length; i++) {
                 
@@ -93,12 +69,8 @@ exports.presence = async (req, res) => {
                     value: req.body.audience_meta_values[i].value
                 })
 
-                if(!audience_meta_value_query) {
-
-                    req.flash('query_status', 'failed at meta values')
-                    response.err = 'ERR_AT_META_VALUES'
-                    response.status = false
-                }
+                if(!audience_meta_value_query)
+                    res.api.die('ERR_UAAC_FAIL_ADDING_META_VALUES')
             }
         }
         // end inserting audience
@@ -108,7 +80,10 @@ exports.presence = async (req, res) => {
             audience_id: audience_id,
             status: req.body.status
         })
+
+        if(!presence_query)
+            res.api.die('ERR_UAAC_FAIL_ADDING_PRESENCE')
         
-        res.send(JSON.stringify(response))
+        res.api.send_json()
     }
 }
