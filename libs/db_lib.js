@@ -1,6 +1,6 @@
 'use strict'
 
-var config = require('../configs/app_configs.js').config
+var config = require('../configs/configs.js').config
 var knex = require('knex') (config.development.db)
 
 module.exports = knex

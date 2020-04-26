@@ -1,0 +1,7 @@
+tr>th{
+    vertical-align: middle!important;
+}
+
+.sidebar-dark .nav-item .nav-link i {
+    min-width: 17px;
+}

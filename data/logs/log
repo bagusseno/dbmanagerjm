@@ -1,6 +1,0 @@
-INFO: New presence view request [Sat Mar 21 2020 14:06:27 GMT+0700 (Western Indonesia Time)]
-INFO: New presence view request [Sat Mar 21 2020 14:12:31 GMT+0700 (Western Indonesia Time)]
-ERROR: ERR GET BY ID: Error: connect ETIMEDOUT [Sat Mar 21 2020 14:12:41 GMT+0700 (Western Indonesia Time)]
-ERROR: ERR GET BY ID: Error: Undefined binding(s) detected when compiling SELECT. Undefined column(s): [id] query: select * from `event_head` where `id` = ? [Sat Mar 21 2020 14:12:46 GMT+0700 (Western Indonesia Time)]
-INFO: New presence view request [Sat Mar 21 2020 14:13:56 GMT+0700 (Western Indonesia Time)]
-INFO: New presence view request [Sat Mar 21 2020 14:14:41 GMT+0700 (Western Indonesia Time)] [IP_ADDRESS: ::1]

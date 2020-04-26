@@ -1,0 +1,25 @@
+.presence-item-css:hover {
+    cursor: pointer;
+    background: #c1d1ff;
+    user-select: none;
+}
+.list-group-item{
+     position:relative;
+     display:block;
+     padding:.75rem 1.25rem;
+     margin-bottom:-1px;
+     background-color:#fff;
+     border:1px solid rgba(0,0,0,.125);
+     border-color: #486dda;
+    }
+form.user .form-control-user{
+     font-size:1rem!important;
+     border-radius: 0rem!important;
+     padding:1.5rem 1rem
+    }
+.member-info{
+    color: #4e73df;
+    text-transform:uppercase;
+    font-size:12px;
+    margin-left:15px;
+}

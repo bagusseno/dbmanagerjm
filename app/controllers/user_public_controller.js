@@ -1,7 +1,6 @@
 'use strict'
 
 var user_model = require('../models/user_model.js')
-var presence_model = require('../models/presence_model.js')
 
 exports.login = async (req, res) => {
     
@@ -36,16 +35,4 @@ exports.login = async (req, res) => {
         res.render('auth/login', {
             page_title: 'Log in to Absensi'
         })
-}
-
-exports.register = (req, res) => {
-
-    res.render('auth/register', {
-            page_title: 'Register'
-        })
-}
-
-exports.live_report = async (req, res) => {
-
-    
 }

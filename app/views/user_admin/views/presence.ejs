@@ -1,26 +1,26 @@
 <%- include('../../layout/header') %>
 
 <script>
-  var audiences = <%- JSON.stringify(audiences) %>
-  var current_selected_audience_id = 0
+  var members = <%- JSON.stringify(members) %>
+  var current_selected_member_id = 0
   var event_id = <%- event_id %>
   var current_registration_state = ''
 </script>
 
 <body class="bg-gradient-primary">
-  <div class="container" >
+  <div class="container">
     <!-- Outer Row -->
     <div class="row justify-content-center">
       <div class="col-lg-12">
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
-            
-             <!-- Nested Row within Card Body -->
-             <div id="success-msg" class="row animate-box" data-animate-effect="fadeInUp" style="display:none">
+
+            <!-- Nested Row within Card Body -->
+            <div id="success-msg" class="row animate-box" data-animate-effect="fadeInUp" style="display:none">
               <div class="col-lg">
                 <div class="p-5">
-                  <div class="text-center" >
-                    <h1 class="mb-4 font-size: 120px" style="font-size:59px; font-family:Kaushan Script" >
+                  <div class="text-center">
+                    <h1 class="mb-4 font-size: 120px" style="font-size:59px; font-family:Kaushan Script">
                       Presensi Berhasil, Silakan Mengaji!
                     </h1>
                   </div>
@@ -35,31 +35,26 @@
             <div id="presence" class="row animate-box" data-animate-effect="fadeInUp">
               <div class="col-lg">
                 <div class="p-5">
-                  <div class="text-center" >
-                    <h1 class="mb-4" style="font-size:3rem; font-family:Kaushan Script" >
+                  <div class="text-center">
+                    <h1 class="mb-4" style="font-size:3rem; font-family:Kaushan Script">
                       Silakan Masukkan Nama Anda
                     </h1>
                   </div>
                   <form class="user">
                     <div class="form-group">
-                      <input
-                        type="text"
-                        class="form-control form-control-lg form-control-user text-left"
-                        id="name"
-                        placeholder="MASUKKAN NAMA ANDA"
-                        style="text-transform: uppercase;"
-                      />
-                        <ul class="list-group" id="result">
-                        </ul>
-                        </div>
+                      <input type="text" class="form-control form-control-lg form-control-user text-left" id="name"
+                        autocomplete="off" placeholder="MASUKKAN NAMA ANDA" style="text-transform: uppercase;" />
+                      <ul class="list-group" id="result">
+                      </ul>
+                    </div>
                   </form>
                 </div>
               </div>
             </div>
             <!-- End Nested Row within Card Body -->
-            
+
             <hr class="sidebar-divider my-0 ">
-            
+
             <!-- Nested Row within Card Body -->
             <div id="register" class="row animate-box" data-animate-effect="fadeInUp" style="display:none">
               <div class="col-lg">
@@ -70,17 +65,62 @@
                     </h1>
                   </div>
                   <form id="completion-form" data-parsley-validate>
-            
+
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="nama">NAMA LENGKAP</label>
-                        <input type="text" id="nama" name="nama" class="form-control" autocomplete="off" style="text-transform: uppercase">
+                        <input type="text" id="nama" name="nama" class="form-control" autocomplete="off"
+                          style="text-transform: uppercase">
                       </div>
                     </div>
+
+                    <%
+
+                    member_meta_indexes.forEach((e) => {
+                    
+                      if(e.type == "select") {
+
+                    %>
+
                     <div class="row form-group">
                       <div class="col-md-12">
+                        <label for="gender"><%- e.name.toUpperCase() %></label>
+                        <select name="member_meta_values" id="gender" class="form-control" required>
+                          <option value="" disabled selected></option>
+                          
+                          <%
+
+                          member_meta_options.forEach((e2) => {
+
+                            if(e2.member_meta_index_id == e.id) {
+
+                            %>
+
+                            <option value="<%- e2.value -%>"><%- e2.value -%></option>
+
+                            <%
+
+                            }
+
+                          })
+
+                          %>
+
+                        </select>
+                      </div>
+                    </div>
+                    
+                    <%
+
+                      }
+                    })
+
+                    %>
+
+                    <!-- <div class="row form-group">
+                      <div class="col-md-12">
                         <label for="gender">JENIS KELAMIN</label>
-                        <select name="audience_meta_values" id="gender" class="form-control" required>
+                        <select name="member_meta_values" id="gender" class="form-control" required>
                           <option value="" disabled selected></option>
                           <option value="LAKI-LAKI">LAKI-LAKI</option>
                           <option value="PEREMPUAN">PEREMPUAN</option>
@@ -90,7 +130,7 @@
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="desa">DESA</label>
-                        <select id="desa" name="audience_meta_values" class="form-control" required>
+                        <select id="desa" name="member_meta_values" class="form-control" required>
                           <option value="" disabled selected></option>
                           <option value="BANJARAN">BANJARAN</option>
                           <option value="BALEENDAH">BALEENDAH</option>
@@ -109,7 +149,7 @@
                         </select>
                       </div>
                     </div>
-            
+
                     <div class="row form-group">
                       <div class="col-md-12">
                         <label for="pendidikan">JENJANG PENDIDIKAN</label>
@@ -191,14 +231,15 @@
                         <label for="ttl">TAHUN LAHIR</label>
                         <input type="text" id="ttl-tahun" name="ttl" class="form-control" autocomplete="off" required>
                       </div>
-                    </div>
-            
-            
+                    </div> -->
+
+
                     <div class="row form-group">
                       <div class="col-md-12">
                         <button type="submit" name="submit" id="presence-btn"
                           class="btn btn-primary btn-user btn-block text-center">SUBMIT</button>
-                        <button type="submit" name="submit" id="cancel-btn" class="btn btn-primary btn-user btn-block text-center"
+                        <button type="submit" name="submit" id="cancel-btn"
+                          class="btn btn-primary btn-user btn-block text-center"
                           style="border-color: #e74a3b; background: #e74a3b!important">CANCEL</button>
                       </div>
                     </div>

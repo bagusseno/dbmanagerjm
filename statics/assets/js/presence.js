@@ -9,21 +9,25 @@ $(document).ready(function() {
         $("#presence").show();
         $("#register").hide();
 
-        current_selected_audience_id = 0
+        current_selected_member_id = 0
     })
     
     $("#name").keyup(function() {
 
-        var found_audiences = audiences.filter(row => row.name.includes($("#name").val().toUpperCase())).slice(0, 10)
+        var found_members = members.filter(row => row.name.includes($("#name").val().toUpperCase())).slice(0, 10)
 
         $("#result").html("")
 
-        found_audiences.forEach((v,k) => {
+        found_members.forEach((v,k) => {
+
+            // $("#result").append('<li data-id=' + v.id + ' class="list-group-item link-class presence-item-css presence-item">'
+            //     + v.name
+            //     + '<span class="member-info">' + v.desa + '</span>'
+            //     + '<span class="member-info">' + v.kelompok + '</span>'
+            //     + '</li>')
 
             $("#result").append('<li data-id=' + v.id + ' class="list-group-item link-class presence-item-css presence-item">'
                 + v.name
-                + '<span class="audience-info">' + v.desa + '</span>'
-                + '<span class="audience-info">' + v.kelompok + '</span>'
                 + '</li>')
 
             $(".presence-item").click(function() {
@@ -33,19 +37,19 @@ $(document).ready(function() {
                 $("#presence").hide();
                 $("#register").show();
 
-                var audience = audiences.find(element => element.id == $(this).attr('data-id'))
-                current_selected_audience_id = $(this).attr('data-id')
+                var member = members.find(element => element.id == $(this).attr('data-id'))
+                current_selected_member_id = $(this).attr('data-id')
 
-                $("#nama").val(audience.name)
-                $("#gender").val(audience['jenis kelamin'])
-                $("#desa").val(audience.desa)
+                $("#nama").val(member.name)
+                $("#gender").val(member['jenis kelamin'])
+                $("#desa").val(member.desa)
                 $("#desa").change()
-                $("#pendidikan").val(audience['jenjang pendidikan'])
+                $("#pendidikan").val(member['jenjang pendidikan'])
 		        $("#pendidikan").change()
-                $("#kelas").val(audience['kelas/tingkatan'])
-                $("#kelompok").val(audience.kelompok)
+                $("#kelas").val(member['kelas/tingkatan'])
+                $("#kelompok").val(member.kelompok)
 
-                var ttl_moment = moment(audience['tanggal lahir'], 'DD/MM/YYYY')
+                var ttl_moment = moment(member['tanggal lahir'], 'DD/MM/YYYY')
                 var ttl = ttl_moment.toDate()
                 
 		if(!isNaN(ttl.getDate())) {              
@@ -84,39 +88,10 @@ $(document).ready(function() {
             data: {
                 registration_state: current_registration_state,
                 event_id: event_id,
-                audience_id: current_selected_audience_id,
+                member_id: current_selected_member_id,
                 status: 'present',
-                name: $('#nama').val(),
-                audience_meta_values: [
-                    {
-                        audience_meta_index_id: 2,
-                        value: $('#gender').val()
-                    },
-                    {
-                        audience_meta_index_id: 3,
-                        value: $('#kelompok').val()
-                    },
-                    {
-                        audience_meta_index_id: 4,
-                        value: $('#desa').val()
-                    },
-                    {
-                        audience_meta_index_id: 5,
-                        value: $('#pendidikan').val()
-                    },
-                    {
-                        audience_meta_index_id: 6,
-                        value: $('#kelas').val()
-                    },
-                    {
-                        audience_meta_index_id: 7,
-                        value: ttl_string
-                    },
-                    {
-                        audience_meta_index_id: 8,
-                        value: ttl_moment.diff(moment(), 'years')
-                    },
-                ]
+                name: $('#nama').val().toUpperCase(),
+                member_meta_values: []
             }
         }).done((res) => {
             
@@ -147,7 +122,7 @@ $(document).ready(function() {
                 $("#name").val('')
                 $("#result").html('')
                 
-                current_selected_audience_id = 0
+                current_selected_member_id = 0
             }
 
             $("#presence-btn").attr("disabled", false)

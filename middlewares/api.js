@@ -20,14 +20,16 @@ exports.api = (req, res, next) => {
 
     api.add_err = (err_code, msg = null) => {
 
-        var new_error = this.response.errs.push(api.err_schema)
+        var new_error = api.err_schema;
         new_error.err_code = err_code
         new_error.msg = msg
+
+        api.response.errs.push(new_error)
 
         // log err
         logger.err(msg, req)
 
-        if(auto_false_if_err)
+        if(api.auto_false_if_err)
             response.set_status(false)
     }
 

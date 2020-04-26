@@ -1,0 +1,61 @@
+<%- include('../../layout/header') %>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <%- include('../../layout/sidebar') %>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <%- include('../../layout/topbar') %>
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    
+                    <table class="datatable table table-stripedt table-bordered">
+                        <thead>
+                            <tr>
+                                <th width="1">NO</th>
+                                <th>Attribute name</th>
+                                <th>Attribute type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <% member_meta_indexes.forEach((row, k) => { %>
+
+                                <tr>
+                                    <td><%- k+1 -%></td>
+                                    <td><%- row.name -%></td>
+                                    <td><%- row.type -%></td>
+                                    <td>[Edit] [Delete]</Edit></td>
+                                </tr>
+                            <% }) %>
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <!-- End Page Content -->
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+
+            <%- include('../../layout/copyright') %>
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <%- include('../../layout/logout') %>
+    <%- include('../../layout/footer') %>
+
+    <script type="text/javascript">
+    $('.datatable').DataTable()
+    </script>

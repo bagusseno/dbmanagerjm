@@ -10,23 +10,16 @@ module.exports = function(app) {
     
 	// user public views
 	app.all("/login", user_public_controller.login)
-	app.all("/register", user_public_controller.register)
-	app.all('/live-report/:event_id', user_public_controller.live_report)
 	
 	// user admin views
 	app.all("/admin/dashboard", user_admin_controller.dashboard)
-	app.all("/presence/:event_id", user_admin_controller.presence)
 
 	// user admin views and managements
-	app.all("/admin/manage/audience-databases/:audience_head_id", multer.any(), user_admin_controller.manage_all_audience)
-	app.all("/admin/manage/event-heads", user_admin_controller.manage_all_event_head)
-	app.all("/admin/manage/event-heads/:event_head_id", user_admin_controller.manage_all_event)
-
-	// user APIs
-	app.post("/admin/api/presence", user_admin_api_controller.presence)
+	app.all("/admin/manage/members", multer.any(), user_admin_controller.manage_all_members)
+	app.all("/admin/manage/attributes", multer.any(), user_admin_controller.manage_all_member_meta_indexes)
 
 	// meta views
-	app.all("/admin/manage/meta/:audience_head_id", user_admin_controller.manage_all_audience_meta_index)
+	app.all("/admin/manage/meta/:member_head_id", user_admin_controller.manage_all_member_meta_indexes)
 
 	// function routes
 	app.all("/admin/logout", user_admin_controller.logout)
