@@ -8,7 +8,8 @@ exports.api = (req, res, next) => {
         status: null,
         errs: [],
         msg: [],
-        responses: {}
+        responses: [],
+        errs_string: ""
     };
 
     api.err_schema = {
@@ -16,7 +17,7 @@ exports.api = (req, res, next) => {
         msg: null
     }
 
-    api.auto_false_if_err = false
+    api.auto_false_if_err = true
 
     api.add_err = (err_code, msg = null) => {
 
@@ -26,18 +27,28 @@ exports.api = (req, res, next) => {
 
         api.response.errs.push(new_error)
 
+        api.response.errs_string += msg + ". "
+
         // log err
         logger.err(msg, req)
 
         if(api.auto_false_if_err)
-            response.set_status(false)
+            api.set_status(false)
     }
 
     api.die = (err_code, msg = null) => {
 
         api.add_err(err_code, msg)
 
-        res.send(JSON.stringify(api.response))
+        res.send_json()
+    }
+
+    // set status and send json
+    api.final_status = (status) => {
+
+        api.set_status(status)
+
+        api.send_json()
     }
 
     api.add_msg = (msg) => {

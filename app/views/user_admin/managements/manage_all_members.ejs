@@ -11,8 +11,171 @@
                 <%- include('../../layout/topbar') %>
 
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    
+                <div class="container-fluid" style="overfldow: scroll;">
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            
+                            <!-- Circle Buttons -->
+                            <div class="card shadow mb-4" style="width: fit-contents;">
+
+                                <!-- Page Heading -->
+                                <div class="card-header py-3">
+                                    <h3 class="m-0 font-weight-bold text-primary">Daftar Warga</h3>
+                                </div>
+                                
+                                <div class="card-body">
+
+                                    <form style="display: none;" method="POST" enctype="multipart/form-data">
+                                        <input name="member_meta_indexes_order">
+                                        <input type="file" name="test">
+                                        <input name="action" value="upload_member_csv">
+                                        <input type="submit">
+                                    </form>
+
+                                    <form method="POST">
+
+                                        <input name="action" value="create">
+
+                                        <input type="text" name="name">
+                                        <input type="hidden" name="family_head_id" value="0">
+                                        <input type="text" id="search-parent">
+                                        <div id="selected-parent">
+
+                                        </div>
+                                        <ul id="search-parent-result">
+
+                                        </ul>
+
+                                        <%
+
+                                        member_meta_indexes.forEach((e) => {
+                                        
+                                        if(e.type == "select") {
+
+                                        %>
+
+                                            <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label for="member_meta_values[]"><%- e.name.toUpperCase() %></label>
+                                                <input type="hidden" name="member_meta_indexes[]" value="<%- e.id -%>">
+                                                <select name="member_meta_values[]" id="gender" class="form-control" required>
+                                                <option value="" disabled selected></option>
+                                                
+                                                <%
+
+                                                member_meta_options.forEach((e2) => {
+
+                                                    if(e2.member_meta_index_id == e.id) {
+
+                                                    %>
+
+                                                    <option value="<%- e2.value -%>"><%- e2.value -%></option>
+
+                                                    <%
+
+                                                    }
+
+                                                })
+
+                                                %>
+
+                                                </select>
+                                            </div>
+                                            </div>
+                                        
+                                        <%
+
+                                        } else {
+
+                                        %>
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <label for="gender"><%- e.name.toUpperCase() %></label>
+                                                    <input type="hidden" name="member_meta_indexes[]" value="<%- e.id -%>">
+                                                    <input type="text" name="member_meta_values[]">
+                                                </div>
+                                            </div>
+
+                                        <%
+
+                                        }
+
+                                        })
+
+                                        %>
+
+                                        <input type="submit" value="Tambah">
+                                    </form>
+                                    
+                                    <table class="display compact table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama</th >
+                                                
+                                                <% member_meta_indexes.forEach(e => { %>
+
+                                                    <th><%- e.name -%></th>
+
+                                                <% }) %>
+
+                                                <th>ACTION</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <% member_data.forEach(e => { %>
+
+                                                <% if(e['2.id:10'] == 'kk' || e['2.id:10'] == 'KK') { // 2.id:10 = STATUS KELUARGA %>
+
+                                                    <tr style="background-color: bisque;">
+                                                
+                                                <% } else if (e['2.id:10'] == "" && e.family_head_id == 0) { %>
+
+                                                    <tr style="background-color: lightgreen;">
+
+                                                <% } else { %>
+
+                                                    <tr>
+
+                                                <% } %>
+
+                                                <td><input member-meta-index-id="name" member-id="<%- e.id -%>" value="<%- e['name'] -%>"></td>
+
+                                                <% for(let e2 in e) { %>
+
+                                                    <% if(e2 != 'id' && e2 != 'family_head_id' && e2 != 'name') { %>
+
+                                                        <td><input member-meta-index-id="<%- e2.split(':')[1] -%>" member-id="<%- e.id -%>" value="<%- e[e2] -%>"></td>
+                                                    
+                                                    <% } %>
+
+                                                <% } %>
+
+                                                    <td member-id="<%- e.id -%>">
+                                                        <span><button class="btn btn-primary delete-member">Hapus</button></span>
+
+                                                        <% if(e['2.id:10'] == 'kk' || e['2.id:10'] == 'KK') { // 2.id:10 = STATUS KELUARGA %>
+                                                        
+                                                            <span><button class="btn btn-primary add-member">Tambah istri/anak</button></span>
+                                                            <span><button class="btn btn-primary">Hapus KK</button></span>
+
+                                                        <% } else if(e.family_head_id != 0) { %>
+
+                                                            <span><button class="btn btn-primary delete-from-family">Hapus dari KK</button></span>
+                                                            <span><button class="btn btn-primary change-family">Ganti KK</button></span>
+                                                        <% } %>
+                                                    </td>
+
+                                                </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- End Page Content -->
                 <!-- /.container-fluid -->
@@ -29,5 +192,43 @@
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
     <%- include('../../layout/logout') %>
     <%- include('../../layout/footer') %>
+
+    <script>
+        $(document).ready(() => {
+
+            $("#search-parent").keyup(() => {
+
+                $("#search-parent-result").html("")
+
+                var found_members = member_data.filter(row => row.name.toUpperCase().includes($("#search-parent").val().toUpperCase())).slice(0, 10)
+
+                found_members.forEach(e => {
+
+                    if(e["2.id:10"].toLowerCase() == "kk")
+                        $("#search-parent-result").append("<li member-id='" + e["id"] + "'>" + e.name + "</li>")
+                })
+
+                $("#search-parent-result li").click((e) => {
+                    
+                    alert($(e.target).attr('member-id'))
+                    $("input[name='family_head_id']").val($(e.target).attr('member-id'))
+                    $("#selected-parent").html("Selected: " + $(e.target).html() + " <div id='clear-parent'>[X]</div>")
+                    $("#search-parent").html("")
+                    $("#search-parent-result").html("")
+
+                    $("#clear-parent").click(() => {
+
+                        $("input[name='family_head_id']").val("0")
+                        $("#selected-parent").html("")
+                    })
+                })
+            })
+        })
+    </script>
+    <script>
+        var member_data = <%- JSON.stringify(member_data) -%>;
+    </script>
+

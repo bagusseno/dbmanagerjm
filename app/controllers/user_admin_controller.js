@@ -19,11 +19,13 @@ exports.manage_all_members = async (req, res) => {
 
             case 'create':
 
+                console.log("POST CREATE MEMBER");
+
                 if (isset(req.body.name)) {
 
                     var member_id = await member_model.add({
-                        user_id: req.get_current_user().id,
-                        name: req.body.name
+                        name: req.body.name,
+                        family_head_id: req.body.family_head_id
                     })
 
                     if (member_id)
@@ -33,6 +35,8 @@ exports.manage_all_members = async (req, res) => {
 
                     if (member_id && req.body.member_meta_values != null) {
 
+                        console.log("mbm meta values");
+                        
                         for (var i = 0; i < req.body.member_meta_values.length; i++) {
 
                             var member_meta_value_query = await member_meta_value_model.add({
@@ -41,8 +45,14 @@ exports.manage_all_members = async (req, res) => {
                                 value: req.body.member_meta_values[i]
                             })
 
-                            if (!member_meta_value_query)
+                            console.log(req.body.member_meta_values[i]);
+                            console.log(req.body.member_meta_indexes[i]);
+
+                            if (!member_meta_value_query) {
+
                                 req.flash('query_status', 'failed at meta values')
+                                console.log("FAILED");
+                            }
                         }
                     }
                 }
@@ -53,7 +63,7 @@ exports.manage_all_members = async (req, res) => {
 
                 if (isset(req.body.id, req.body.name)) {
 
-                    var member_meta_indexes = await member_meta_index_model.get_all_by_member_head_id(req.body.member_head_id)
+                    var member_meta_indexes = await member_meta_index_model.get_all()
 
                     var query = await member_model.update(req.body.id, {
                         user_id: req.get_current_user().id,
@@ -101,7 +111,7 @@ exports.manage_all_members = async (req, res) => {
 
                         var member_meta_values_query = await member_meta_value_model.remove_where({
                             member_id: req.body.id
-                        })
+                        })  
 
                         if (!member_meta_values_query)
                             req.flash('query_status', 'failed removing meta values')
@@ -110,20 +120,22 @@ exports.manage_all_members = async (req, res) => {
 
             case 'upload_member_csv':
 
+                console.log('ENTETEDDD');
                 if (isset(req.body.member_meta_indexes_order)) {
 
                     console.log(req.files);
 
                     fs.readFile(req.files[0].path, async (readFile_err, member_data) => {
-
+                        
                         if (readFile_err) console.log(readFile_err);
 
                         member_data = csv_string.parse(member_data.toString())
 
-                        member_meta_indexes = await member_meta_index_model.get_all_by_user_id(req.get_current_user().id)
+                        member_meta_indexes = await member_meta_index_model.get_all()
                         var member_meta_indexes_order = req.body.member_meta_indexes_order.split(',')
 
                         var member_meta_index_ids_order = []
+                        var current_family_head_id, current_family_head
 
                         for (var i = 0; i < member_meta_indexes_order.length; i++) {
 
@@ -142,31 +154,42 @@ exports.manage_all_members = async (req, res) => {
                         for (var i = 0; i < member_data.length; i++) {
 
                             var member_data_row = member_data[i]
+                            var family_head_id = 0
+
+                            // set the address the same as its KK if it's NOT KK
+                            if (member_data_row[2].toLowerCase() != "kk" && member_data_row[2].toLowerCase() != "" && current_family_head != undefined) {
+
+                                member_data_row[4] = current_family_head[4]
+                                family_head_id = current_family_head_id
+                            }
 
                             // insert the name first
                             var member_id = await member_model.add({
-                                user_id: req.get_current_user().id,
-                                name: member_data_row[0]
+                                name: member_data_row[0],
+                                family_head_id: family_head_id
                             })
+                            
+                            // set current data if it's a KK. It's duplicated since it needs member_id which
+                            // obtained from the query function above
+                            if (member_data_row[2].toLowerCase() == "kk") {
 
-                            if (member_id)
-                                req.flash('query_status', 'success')
-                            else
-                                req.flash('query_status', 'failed')
+                                current_family_head = member_data_row
+                                current_family_head_id = member_id
+                            }
 
-                            if (member_id) {
+                            if (!member_id)
+                                res.api.die('err_add_member')
+                            
+                            for (var j = 0; j < member_meta_index_ids_order.length; j++) {
+                                
+                                var member_meta_value_query = await member_meta_value_model.add({
+                                    member_id: member_id,
+                                    member_meta_index_id: member_meta_index_ids_order[j],
+                                    value: member_data_row[j] // since meta values start after the name column (standardization)
+                                })
 
-                                for (var j = 0; j < member_meta_index_ids_order.length; j++) {
-
-                                    var member_meta_value_query = await member_meta_value_model.add({
-                                        member_id: member_id,
-                                        member_meta_index_id: member_meta_index_ids_order[j],
-                                        value: member_data_row[j + 1] // since meta values start after the name column (standardization)
-                                    })
-
-                                    if (!member_meta_value_query)
-                                        req.flash('query_status', 'failed when adding meta value')
-                                }
+                                if (!member_meta_value_query)
+                                    req.flash('query_status', 'failed when adding meta value')
                             }
                         }
                     })
@@ -176,8 +199,15 @@ exports.manage_all_members = async (req, res) => {
         }
     }
 
+    var member_meta_indexes = await member_meta_index_model.get_all()
+    var member_meta_options = await member_meta_option_model.get_all()
+    var member_data = await member_model.get_all_sorted_by_family()
+
     res.render("user_admin/managements/manage_all_members", {
         page_title: "Manage All member",
+        member_meta_indexes: member_meta_indexes,
+        member_meta_options: member_meta_options,
+        member_data: member_data,
         req: req
     });
 }
@@ -370,21 +400,6 @@ exports.logout = (req, res) => {
 }
 
 exports.report = async (req, res) => {
-
-    // check event existence
-    var event = event_model.get_by_id(event_id)
-
-    if (!isset(event)) {
-
-        res.render("user_admin/views/event_presence_report.ejs", {
-            page_title: 'Event presence report',
-            found: false
-        })
-
-        return false
-    }
-
-    var present_members = presence_model.get_all_where({ event_id: event_id })
 
 
 }
