@@ -29,13 +29,11 @@ exports.manage_all_members = async (req, res) => {
                     })
 
                     if (member_id)
-                        req.flash('query_status', 'success')
+                        req.flash('success', 'Successfuly adding new member')
                     else
-                        req.flash('query_status', 'failed')
+                        req.flash('error', 'Fail adding new member')
 
                     if (member_id && req.body.member_meta_values != null) {
-
-                        console.log("mbm meta values");
                         
                         for (var i = 0; i < req.body.member_meta_values.length; i++) {
 
@@ -50,8 +48,7 @@ exports.manage_all_members = async (req, res) => {
 
                             if (!member_meta_value_query) {
 
-                                req.flash('query_status', 'failed at meta values')
-                                console.log("FAILED");
+                                req.flash('error', 'Failed at meta values')
                             }
                         }
                     }

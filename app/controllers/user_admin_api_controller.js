@@ -24,9 +24,9 @@ exports.update_cell = async (req, res) => {
         });
 
     if(query)
-        res.final_status(true)
+        res.api.final_status(true)
     else
-        res.final_status(false)
+        res.api.final_status(false)
 }
 
 exports.delete_member = async (req, res) => {
@@ -42,17 +42,27 @@ exports.delete_member = async (req, res) => {
 
 exports.add_family_member = async (req, res) => {
 
-    if(!isset(req.body.member_id, req.body.candidate_id))
+    if(!isset(req.body.parent_id, req.body.candidate_id, req.body.family_status))
         res.api.die("empty_params")
 
-    let query = member_model.update(req.body.candidate_id, {
-        family_head_id: req.body.member_id
+    let member_query = member_model.update(req.body.candidate_id, {
+        family_head_id: req.body.parent_id
     })
 
-    if(query)
-        res.final_status(true)
+    if(!member_query)
+        res.api.die("Failed adding member query")
+
+    let family_status_query = member_meta_value_model.update_where({
+        member_meta_index_id: 10,
+        member_id: req.body.candidate_id,
+    }, {
+        value: req.body.family_status
+    })
+
+    if(family_status_query)
+        res.api.final_status(true)
     else
-        res.final_status(false)
+        res.api.final_status(false)
 }
 
 exports.remove_family_head = async (req, res) => {
@@ -74,9 +84,9 @@ exports.remove_family_head = async (req, res) => {
         })
 
     if(query)
-        res.final_status(true)
+        res.api.final_status(true)
     else
-        res.final_status(false)
+        res.api.final_status(false)
 }
 
 exports.remove_from_family = async (req, res) => {
@@ -89,9 +99,9 @@ exports.remove_from_family = async (req, res) => {
     })
 
     if(query)
-        res.final_status(true)
+        res.api.final_status(true)
     else
-        res.final_status(false)
+        res.api.final_status(false)
 }
 
 exports.update_family = async (req, res) => {
@@ -104,9 +114,9 @@ exports.update_family = async (req, res) => {
     })
 
     if(query)
-        res.final_status(true)
+        res.api.final_status(true)
     else
-        res.final_status(false)
+        res.api.final_status(false)
 }
 
 exports.add_member = async (req, res) => {
@@ -134,7 +144,7 @@ exports.add_member = async (req, res) => {
     })
 
     if(query)
-        res.final_status(true)
+        res.api.final_status(true)
     else
-        res.final_status(false)
+        res.api.final_status(false)
 }

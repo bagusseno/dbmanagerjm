@@ -64,6 +64,8 @@ exports.api = (req, res, next) => {
     api.send_json = () => {
 
         res.send(JSON.stringify(api.response))
+
+        console.log("JSON sent")
     }
 
     res.api = api
