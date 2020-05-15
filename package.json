@@ -6,7 +6,7 @@
   "scripts": {
     "test": "absensi_test"
   },
-  "author": "Bagus Seno Pamungkas & Abu Abdirrahman",
+  "author": "Bagus Seno Pamungkas & Abu Abdirohman",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
