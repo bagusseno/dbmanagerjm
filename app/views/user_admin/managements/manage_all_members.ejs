@@ -42,7 +42,7 @@
                                         <%- locals.messages.success -%>
                                     </div>
 
-                                    <form style="display: none" method="POST">
+                                    <form style="display: noe" method="POST">
 
                                         <input name="action" value="create">
 
@@ -177,17 +177,7 @@
 
                                                     <td member-id="<%- e.id -%>">
                                                         
-                                                        <% if(e.family_head_id == 0 && e['2.id:10'].toLowerCase() != 'kk') { %>
-
-                                                            <span><button class="btn btn-danger delete-member">Hapus</button></span>
-
-                                                        <% } %>
-
-                                                        <% if(e['2.id:10'].toLowerCase() == 'kk') { %>
-
-                                                            <span><button class="btn btn-danger remove-family-head">Hapus KK</button></span>
-
-                                                        <% } %>
+                                                        <span><button class="btn btn-danger delete-member">Hapus</button></span>
 
                                                         <% if(e.family_head_id == 0) { // 2.id:10 = STATUS KELUARGA %>
                                                         
@@ -196,7 +186,6 @@
                                                         <% } else { %>
 
                                                             <span><button class="btn btn-warning remove-from-family">Hapus dari KK</button></span>
-                                                            <span><button class="btn btn-primary change-family">Ganti KK</button></span>
                                                         <% } %>
                                                     </td>
 

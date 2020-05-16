@@ -17,10 +17,11 @@ $(document).ready(() => {
 
             }).done((res) => {
 
-                if(res == "success")
+                if(res.status == true)
                     console.log("Success update");
                 else
                     console.log("Failed update");
+
             }).fail(() => {
 
                 console.log("Error network");
@@ -51,11 +52,11 @@ $(document).ready(() => {
         $('.delete-member').click((e) => {
 
             let member_id = $(e.target).parent().parent().attr('member-id')
-            let tr_index = $(e.target).parent().parent().parent().index()
+            let tr_eq = $(e.target).parent().parent().parent().index()
 
-            tr_index++ // I don't know why if I delete the 0 at the very first time, there's no effect like something else deleted
+            tr_eq++ // I don't know why if I delete the 0 at the very first time, there's no effect like something else deleted
 
-            console.log(tr_index)
+            console.log(tr_eq)
 
             $.ajax({
                 url: config.hostname + "/admin/api/delete-member",
@@ -68,9 +69,9 @@ $(document).ready(() => {
 
                 if(res.status == true) {
 
-                    $(".DTFC_LeftBodyWrapper").find("tr").eq(tr_index).remove()
-                    $(".DTFC_RightBodyWrapper").find("tr").eq(tr_index).remove()
-                    $(".dataTables_scrollBody").find("tr").eq(tr_index).remove()
+                    $(".DTFC_LeftBodyWrapper").find("tr").eq(tr_eq).remove()
+                    $(".DTFC_RightBodyWrapper").find("tr").eq(tr_eq).remove()
+                    $(".dataTables_scrollBody").find("tr").eq(tr_eq).remove()
 
                 } else
                     alert("Fail deleting member!")
@@ -84,9 +85,19 @@ $(document).ready(() => {
         $('.remove-from-family').click((e) => {
 
             let member_id = $(e.target).parent().parent().attr('member-id')
-            let tr_index = $(e.target).parent().parent().parent().index()
+            let tr_eq = $(e.target).parent().parent().parent().index()
 
-            tr_index++ // I don't know why if I delete the 0 at the very first time, there's no effect like something else deleted
+            tr_eq++ // I don't know why if I delete the 0 at the very first time, there's no effect like something else deleted
+
+            // find parent tr
+            let parent_tr = $(e.target).parent().parent().parent()
+            let parent_tr_eq = $(e.target).parent().parent().parent().index() + 1
+
+            while(parent_tr.css("background-color") != "bisque" && parent_tr.index() != 0) {
+
+                parent_tr = parent_tr.prev()
+                parent_tr_eq--
+            }
 
             $.ajax({
                 url: config.hostname + "/admin/api/remove-from-family",
@@ -101,12 +112,22 @@ $(document).ready(() => {
 
                     console.log("Success remove from family");
 
-                    $(".DTFC_LeftBodyWrapper").find("tr").eq(tr_index).insertAfter($(".DTFC_LeftBodyWrapper").find("tr").eq(tr_index).prev())
-                    $(".DTFC_RightBodyWrapper").find("tr").eq(tr_index).insertAfter($(".DTFC_LeftBodyWrapper").find("tr").eq(tr_index).prev())
-                    $(".dataTables_scrollBody").find("tr").eq(tr_index).insertAfter($(".DTFC_LeftBodyWrapper").find("tr").eq(tr_index).prev())
+                    // change buttons
+                    $(".DTFC_RightBodyWrapper").find("tr").eq(tr_eq).find("td").eq(0).html('<span><button class="btn btn-danger delete-member">Hapus</button></span><span><button class="btn btn-primary add-member">Tambah istri/anak</button></span>')
+                    $(".DTFC_LeftBodyWrapper").find("tr").eq(add_member_candidate_eq).height($(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).height())
+                    $(".dataTables_scrollBody").find("tr").eq(add_member_candidate_eq).height($(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).height())
+
+                    $(".DTFC_LeftBodyWrapper").find("tr").eq(tr_eq).css("background-color", "bisque")
+                    $(".DTFC_RightBodyWrapper").find("tr").eq(tr_eq).css("background-color", "bisque")
+                    $(".dataTables_scrollBody").find("tr").eq(tr_eq).css("background-color", "bisque")
+
+                    $(".DTFC_LeftBodyWrapper").find("tr").eq(tr_eq).insertBefore($(".DTFC_LeftBodyWrapper").find("tr").eq(parent_tr_eq))
+                    $(".DTFC_RightBodyWrapper").find("tr").eq(tr_eq).insertBefore($(".DTFC_RightBodyWrapper").find("tr").eq(parent_tr_eq))
+                    $(".dataTables_scrollBody").find("tr").eq(tr_eq).insertBefore($(".dataTables_scrollBody").find("tr").eq(parent_tr_eq))
 
                 } else
                     console.log("Failed remove from family");
+
             }).fail((e) => {
 
                 console.log("Failed network remove from family. " + e);
@@ -167,11 +188,23 @@ $(document).ready(() => {
 
                 if(res.status == true) {
 
-                    alert("Nehasil")
+                    // OK I also dont understand why if i dont put these 3 lines, the other 3 lines below wont work (auto color)
+                    $(".DTFC_LeftBodyWrapper").find("tr").eq(add_member_candidate_eq).css("background-color", "white")
+                    $(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).css("background-color", "white")
+                    $(".dataTables_scrollBody").find("tr").eq(add_member_candidate_eq).css("background-color", "white")
+
+                    $(".DTFC_LeftBodyWrapper").find("tr").eq(add_member_candidate_eq).css("background-color", "auto!important")
+                    $(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).css("background-color", "auto!important")
+                    $(".dataTables_scrollBody").find("tr").eq(add_member_candidate_eq).css("background-color", "auto!important")
+
+                    // change buttons
+                    $(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).find("td").html('<span><button class="btn btn-danger delete-member">Hapus</button></span><span><button class="btn btn-warning remove-from-family">Hapus dari KK</button></span>')
+                    $(".DTFC_LeftBodyWrapper").find("tr").eq(add_member_candidate_eq).height($(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).height())
+                    $(".dataTables_scrollBody").find("tr").eq(add_member_candidate_eq).height($(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).height())
 
                     $(".DTFC_LeftBodyWrapper").find("tr").eq(add_member_candidate_eq).insertAfter($(".DTFC_LeftBodyWrapper").find("tr").eq(add_member_parent_eq))
-                    $(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).insertAfter($(".DTFC_LeftBodyWrapper").find("tr").eq(add_member_parent_eq))
-                    $(".dataTables_scrollBody").find("tr").eq(add_member_candidate_eq).insertAfter($(".DTFC_LeftBodyWrapper").find("tr").eq(add_member_parent_eq))
+                    $(".DTFC_RightBodyWrapper").find("tr").eq(add_member_candidate_eq).insertAfter($(".DTFC_RightBodyWrapper").find("tr").eq(add_member_parent_eq))
+                    $(".dataTables_scrollBody").find("tr").eq(add_member_candidate_eq).insertAfter($(".dataTables_scrollBody").find("tr").eq(add_member_parent_eq))
 
                 } else
                     alert("Gagal")
